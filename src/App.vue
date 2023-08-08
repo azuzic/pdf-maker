@@ -1,12 +1,11 @@
 <template>
-    <div class="bg-slate-950 w-screen h-screen flex relative">
+    <div class="bg-slate-950 h-screen w-screen relative overflow-hidden">
         <GlobalStoreDebug/>
         <RouterView />
     </div>
 </template>
 
 <script>
-import router from "@/router"
 import GlobalStoreDebug from "@/components/GlobalStoreDebug.vue";
 export default {
     name: "App",
