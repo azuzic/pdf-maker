@@ -14,6 +14,7 @@ export const useGlobalStore = defineStore("globalStore", {
         selected: null,
         type: null,
         entered: false,
+        enabled: true,
         margin: {c:false,X:0.5, Y:0.5},
         PredefinedPDFelements: [],
         PDFelements: []
@@ -23,15 +24,15 @@ export const useGlobalStore = defineStore("globalStore", {
             await this.update();
             this.PredefinedPDFelements = [
                 {
-                    id: 1,
+                    id: "1",
                     type: "text",
                 },
                 {
-                    id: 2,
+                    id: "2",
                     type: "line",
                 },
                 {
-                    id: 3,
+                    id: "3",
                     type: "image",
                 },
             ]
@@ -48,6 +49,7 @@ export const useGlobalStore = defineStore("globalStore", {
             }
         },
         async setSelected(value, type) {
+            console.log("aaa: "+value);
             if (this.selected == value) return;
             this.type = null;
             this.selected = null;

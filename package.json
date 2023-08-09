@@ -20,7 +20,6 @@
     "vue-html-to-paper": "^2.0.3",
     "vue-json-pretty": "^2.2.4",
     "vue-router": "^4.2.4",
-    "vue3-draggable": "^2.0.9",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {

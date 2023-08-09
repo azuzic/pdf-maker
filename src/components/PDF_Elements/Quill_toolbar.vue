@@ -78,21 +78,6 @@ export default {
 </script>
 
 <style lang="scss">
-.custom-select-heading {
-    width: fit-content !important;
-    justify-content: center !important;
-    justify-items: center !important;
-    padding: 1px !important;
-    svg { display:none;}
-    .ql-picker-options {
-        padding: 0px !important;
-        margin: 0px !important;
-        background-color: rgb(200, 250, 200) !important;
-        border: 1px solid !important;
-        border-radius: 4px;
-        z-index: 300;
-    }
-}
 .dp__menu, .dp__overlay_container {
     background-color: rgba(6, 6, 10) !important;
     border: 1px solid rgb(75, 85, 99) !important;

@@ -24,10 +24,10 @@
 
                         <div class="bg-white h-full w-full relative text-black rounded"
                             :style="'padding: '+(globalStore.margin.Y+0.25)+'in '+(globalStore.margin.X+0.25)+'in;'">
-                            <draggable v-model="globalStore.PDFelements" :change="checkMove()"
-                                class="w-full h-full leading-5" :class="globalStore.margin.c ? 'border-2 border-dashed border-amber-600 -m-0.5' : ''">
-                                <template v-slot:item="{ item }">
-                                    <PDF_Element :item="item"/>
+                            <draggable v-model="globalStore.PDFelements" item-key="id" group="pdfelements"
+                                class="w-full h-full leading-5" :class="globalStore.margin.c ? 'border-2 border-dashed rounded border-amber-600 -my-[2px]' : ''">
+                                <template #item="{ element }">
+                                    <PDF_Element :item="element"/>
                                 </template>
                             </draggable>
                         </div>
@@ -43,7 +43,7 @@
 <script>
 import { useGlobalStore } from '@/stores/globalStore'
 import Slider from '@vueform/slider'
-import draggable from "vue3-draggable";
+import draggable from 'vuedraggable'
 import PDF_Element from '@/components/PDF_Element.vue';
 import Quill_toolbar from '@/components/PDF_Elements/Quill_toolbar.vue';
 import Vertical_arrow from '@/components/helpers/vertical_arrow.vue';
@@ -62,8 +62,11 @@ export default {
         const globalStore = useGlobalStore();
         return { globalStore };
     },
+    mounted() {
+        this.checkMove();
+    },
     methods: {
-        async checkMove(evt){
+        async checkMove(){
             await this.globalStore.resetPredefinedPDFelements();
         },
     }

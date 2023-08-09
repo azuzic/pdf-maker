@@ -1,5 +1,5 @@
 <template>
-    <div class="absolute w-0.5 top-0 bg-rose-700 z-10 rounded-full" :style="'height: '+(globalStore.margin.Y+0.21)+'in; left:'+(globalStore.margin.X+0.29)+'in;'">
+    <div class="absolute w-0.5 top-0 bg-rose-700 z-10 rounded-full" :style="'height: '+(globalStore.margin.Y+0.23)+'in; left:'+(globalStore.margin.X+0.29)+'in;'">
         <div class="absolute top-0.5 -left-[0px] bg-rose-700 w-2 h-0.5 rotate-45 rounded-full"></div>
         <div class="absolute top-0.5 -left-[6px] bg-rose-700 w-2 h-0.5 -rotate-45 rounded-full"></div>
         <div class="absolute top-1/2 -translate-y-1/2 ml-3 text-rose-600 font-bold text-sm whitespace-nowrap bg-white px-1 rounded border">{{ (globalStore.margin.Y+0.25).toFixed(2) }}in</div>
