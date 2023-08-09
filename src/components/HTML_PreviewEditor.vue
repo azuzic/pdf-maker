@@ -1,25 +1,33 @@
 <template>
-    <div class="flex justify-center grow overflow-auto">
-        <div class="flex flex-col w-full">
+    <div class="flex justify-center grow overflow-hidden" @mousedown="globalStore.entered ? '' : globalStore.selected = null">
+        <div class="flex flex-col w-full relative overflow-auto">
             
-            <div class="w-full flex flex-col justify-center items-center">
+            <div class="w-full flex flex-col justify-center items-center z-50">
                 <div class="flex justify-center text-4xl font-bold text-slate-400">PDF Editor:</div>
                 <div class="w-96 my-4">
                     <Slider v-model="scale" :min="0.5" :max="2" :step="-1" showTooltip="focus" :merge="0.01" :lazy="false" />
                 </div>
             </div>
 
-            <div class="flex w-full h-full overflow-auto justify-center pb-8">
+            <div class="flex w-full justify-center pb-8 overflow-x-scroll relative">
                 <div :style="'height:'+(height*scale)+'pt; width:'+(width*scale)+'pt;'">
-                
-                    <div id="printMe" class="w-[595pt] h-[842pt] overflow-hidden" 
+                    <div class="sticky top-0 z-50 w-[595pt]"
+                        :style="'height:'+(14*scale)+'pt; width:'+(width)+'pt; transform: scale('+scale+'); transform-origin: top left; margin-bottom: '+(14*scale)+'pt;'">
+                        <Quill_toolbar @mouseenter="globalStore.entered = true" @mouseleave="globalStore.entered = false"
+                        :style="'height:'+(24)+'pt;'" v-if="globalStore.selected != null && globalStore.type=='text'"/>
+                    </div>
+                    <div id="printMe" class="w-[595pt] h-[842pt]" 
                         :style="'height:'+height+'pt; width:'+width+'pt; transform: scale('+scale+'); transform-origin: top left;'">
                         
-                        <div class="bg-white h-full w-full relative p-12 text-base text-black">
-                            <draggable v-model="globalStore.PDFelements"
-                                class="bg-white w-full h-full text-base leading-5">
+                        <Vertical_arrow v-if="globalStore.margin.c"/>
+                        <Horizontal_arrow v-if="globalStore.margin.c"/>
+
+                        <div class="bg-white h-full w-full relative text-black rounded"
+                            :style="'padding: '+(globalStore.margin.Y+0.25)+'in '+(globalStore.margin.X+0.25)+'in;'">
+                            <draggable v-model="globalStore.PDFelements" :change="checkMove()"
+                                class="w-full h-full leading-5" :class="globalStore.margin.c ? 'border-2 border-dashed border-amber-600 -m-0.5' : ''">
                                 <template v-slot:item="{ item }">
-                                    <div>item: {{ item }}</div>
+                                    <PDF_Element :item="item"/>
                                 </template>
                             </draggable>
                         </div>
@@ -36,9 +44,13 @@
 import { useGlobalStore } from '@/stores/globalStore'
 import Slider from '@vueform/slider'
 import draggable from "vue3-draggable";
+import PDF_Element from '@/components/PDF_Element.vue';
+import Quill_toolbar from '@/components/PDF_Elements/Quill_toolbar.vue';
+import Vertical_arrow from '@/components/helpers/vertical_arrow.vue';
+import Horizontal_arrow from '@/components/helpers/horizontal_arrow.vue';
 export default {
     name: "HTML_PreviewEditor",
-    components: { Slider, draggable },
+    components: { Slider, draggable, PDF_Element, Quill_toolbar, Vertical_arrow, Horizontal_arrow },
     data() {
         return {
             height: 842,
@@ -51,54 +63,12 @@ export default {
         return { globalStore };
     },
     methods: {
-        adjustTextareaSize() {
-            const textarea = this.$refs.textarea;
-            const lines = textarea.value.split("\n");
-
-            // Calculate the width based on the longest line
-            const maxWidth = lines.reduce((maxWidth, line) => {
-                // Replace consecutive spaces with non-breaking space (\u00A0)
-                const sanitizedLine = line.replace(/ /g, "\u00A0");
-                
-                const tempDiv = document.createElement("div");
-                tempDiv.textContent = sanitizedLine || "\u00A0"; // Ensure at least one character for measurement
-                tempDiv.style.position = "absolute";
-                tempDiv.classList.add("font-Helvetica");
-                tempDiv.style.visibility = "hidden";
-                document.body.appendChild(tempDiv);
-                const lineWidth = tempDiv.clientWidth;
-                document.body.removeChild(tempDiv);
-                return Math.max(maxWidth, lineWidth);
-            }, 0);
-
-            // Add a margin (width of a single letter) to the calculated maxWidth
-            const letterWidthMargin = this.getLetterWidthMargin();
-            const adjustedMaxWidth = maxWidth + letterWidthMargin;
-
-            // Calculate the content height
-            textarea.style.height = "auto";
-            textarea.style.width = adjustedMaxWidth + "px";
-            textarea.style.height = textarea.scrollHeight + "px";
-        },
-        getLetterWidthMargin() {
-            const tempDiv = document.createElement("div");
-            tempDiv.textContent = "_"; // Use any single letter for measurement
-            tempDiv.style.position = "absolute";
-            tempDiv.style.visibility = "hidden";
-            document.body.appendChild(tempDiv);
-            const letterWidth = tempDiv.clientWidth;
-            document.body.removeChild(tempDiv);
-            return letterWidth;
+        async checkMove(evt){
+            await this.globalStore.resetPredefinedPDFelements();
         },
     }
 }
 </script>
 
 <style lang="scss" src="@vueform/slider/themes/default.css">
-/*
-<textarea ref="textarea" @input="adjustTextareaSize" rows="1" v-model="globalStore.state.text" type="text" 
-    class="bg-slate-300 m-0 p-0 bg-transparent border-b-2 outline-none resize-none overflow-hidden text-black border-none absolute top-0 left-0
-    text-base leading-[1.15] font-Helvetica">
-</textarea>
- */
 </style>

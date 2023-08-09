@@ -13,8 +13,10 @@ const options = {
   ],
   styles: [
     'dist/output.css',
+    'dist/qcss.css',
+    'dist/katex.min.css',
   ],
-  timeout: 0, // default timeout before the print window appears
+  timeout: 1000, // default timeout before the print window appears
   autoClose: true, // if false, the window will not close after printing
   windowTitle: window.document.title, // override the window title
 }
@@ -22,12 +24,19 @@ const options = {
 //GLOBAL STORES
 import { createPinia } from 'pinia'
 
+//TEXT EDITOR INPUT
+import { QuillEditor } from "@vueup/vue-quill";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
+
 //GLOBAL STYLE
 import './style.css'
 
 //PINIA AND VUE
 const pinia = createPinia();
 const app = createApp(App);
+
+//GLOBAL COMPONENTS
+app.component("QuillEditor", QuillEditor);
 
 app.use(VueHtmlToPaper, options);
 app.use(router);
