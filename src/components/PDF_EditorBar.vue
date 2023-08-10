@@ -1,7 +1,7 @@
 <template>
     <div class="w-64 min-w-[256px] bg-slate-800 h-full flex flex-col justify-center items-center px-8">
-        <draggable class="grow flex flex-col pt-16 gap-4 items-center"
-            :list="globalStore.PredefinedPDFelements" v-if="globalStore.refresh" item-key="id" :draggable="!globalStore.enabled"  
+        <draggable class="grow flex flex-col pt-16 gap-4 items-center" @mousedown="globalStore.setSelected(null, null)"
+            :list="globalStore.PredefinedPDFelements" v-if="globalStore.refresh" item-key="id"  
             @change="globalStore.resetPredefinedPDFelements()"
             :clone="clone" :group="{ name: 'pdfelements', pull: pullFunction }">
             <template #item="{ element }">
@@ -49,15 +49,13 @@ export default {
             await this.$htmlToPaper('printMe');
         },
         clone( item ) {
-            return { type: item.type, id: cryptoRandomString({ length: 32, type: 'alphanumeric' }) };
+            let clone = JSON.parse(JSON.stringify(item));
+            clone.id = cryptoRandomString({ length: 32, type: 'alphanumeric' });
+            return clone;
         },
         pullFunction() {
             return "clone";
         },
-        test(value) {
-            this.globalStore.enabled = value;
-            console.log(value);
-        }
     },
 }
 </script>

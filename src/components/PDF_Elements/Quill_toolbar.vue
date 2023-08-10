@@ -1,72 +1,85 @@
+<script setup>
+import { useGlobalStore } from '@/stores/globalStore'
+import Quill_toolbar_height from '@/components/PDF_Elements/Quill_toolbar_height.vue';
+const globalStore = useGlobalStore();
+</script>
 <template>
-    <div id="epictoolbar">      
-        <div class="flex">
-            <button class="ql-bold"></button>
-            <button class="ql-italic"></button>
-            <button class="ql-underline"></button>
-            <button class="ql-strike"></button>
-        </div>
-        <div class="h-6 w-0.5 rounded-full bg-gray-500"></div>
-        <div class="flex">
-            <button class="ql-list" value="bullet"></button>
-            <button class="ql-blockquote"></button>
-            <button class="ql-code-block"></button>
-            <button class="ql-formula"></button>
-        </div>
-        <div class="h-6 w-0.5 rounded-full bg-gray-500"></div>
-        <div class="flex">
-            <select className="ql-align" defaultValue="false">
-                <option label="left"></option>
-                <option label="center" value="center"></option>
-                <option label="right" value="right"></option>
-                <option label="justify" value="justify"></option>
-            </select>
-            <button class="ql-indent" value="-1"></button>
-            <button class="ql-indent" value="+1"></button>
-        </div>
-        <div class="h-6 w-0.5 rounded-full bg-gray-500"></div>
-        <div class="flex">
-            <select class="ql-header custom-select-heading" defaultValue="false">
-                <option value="">Normal</option>
-                <option value="1">H1</option>
-                <option value="2">H2</option>
-                <option value="3">H3</option>
-                <option value="4">H4</option>
-                <option value="5">H5</option>
-                <option value="6">H6</option>
-            </select>
-            <select className="ql-color" defaultValue="false">
-                <option value="#000000">#000000</option>
-                <option value="#06060a">#06060a</option>
-                <option value="#13131f">#13131f</option>
-                <option value="#0f1119">#0f1119</option>
-                <option value="#EF5350">#EF5350</option>
-                <option value="#16a34a">#16a34a</option>
-                <option value="#15171e">#15171e</option>
-                <option value="#cbd5e1">#cbd5e1</option>
-                <option value="#e2e8f0">#e2e8f0</option>
-                <option value="#94a3eb">#94a3eb</option>
-                <option value="#94a3b8">#94a3b8</option>
-            </select>
-            <select className="ql-background" defaultValue="false">
-                <option value="#00000000">#00000000</option>
-                <option value="#06060a">#06060a</option>
-                <option value="#13131f">#13131f</option>
-                <option value="#0f1119">#0f1119</option>
-                <option value="#EF5350">#EF5350</option>
-                <option value="#16a34a">#16a34a</option>
-                <option value="#15171e">#15171e</option>
-                <option value="#cbd5e1">#cbd5e1</option>
-                <option value="#e2e8f0">#e2e8f0</option>
-                <option value="#94a3eb">#94a3eb</option>
-                <option value="#94a3b8">#94a3b8</option>
-            </select>
-        </div>
-        <div class="h-6 w-0.5 rounded-full bg-gray-500"></div>
-        <div class="flex">
-            <button class="ql-script" value="sub"></button>
-            <button class="ql-script" value="super"></button>
-            <button class="ql-clean"></button>
+    <div class="relative flex justify-center items-center w-full border-t border-black">
+        <Quill_toolbar_height class="opacity-0 -z-20  pointer-events-none"/>
+        <div class="absolute w-full h-full bg-[#c8c8c8] -z-20"></div> 
+        <div class="absolute w-full z-50" id="epictoolbar" @mouseenter="globalStore.entered = true" @mouseleave="globalStore.entered = false"
+        v-if="globalStore.selected != null && globalStore.type=='text'">      
+            <div class="flex">
+                <button class="ql-bold"></button>
+                <button class="ql-italic"></button>
+                <button class="ql-underline"></button>
+                <button class="ql-strike"></button>
+            </div>
+            <div class="h-6 w-0.5 rounded-full bg-gray-500"></div>
+            <div class="flex">
+                <button class="ql-list" value="bullet"></button>
+                <button class="ql-blockquote"></button>
+                <button class="ql-code-block"></button>
+                <button class="ql-formula"></button>
+            </div>
+            <div class="h-6 w-0.5 rounded-full bg-gray-500"></div>
+            <div class="flex">
+                <select className="ql-align" defaultValue="false">
+                    <option label="left"></option>
+                    <option label="center" value="center"></option>
+                    <option label="right" value="right"></option>
+                    <option label="justify" value="justify"></option>
+                </select>
+                <button class="ql-indent" value="-1"></button>
+                <button class="ql-indent" value="+1"></button>
+            </div>
+            <div class="h-6 w-0.5 rounded-full bg-gray-500"></div>
+            <div class="flex">
+                <select class="ql-header custom-select-heading" defaultValue="false">
+                    <option value="">Normal</option>
+                    <option value="1">H1</option>
+                    <option value="2">H2</option>
+                    <option value="3">H3</option>
+                    <option value="4">H4</option>
+                    <option value="5">H5</option>
+                    <option value="6">H6</option>
+                </select>
+            </div>
+            <div class="h-6 w-0.5 rounded-full bg-gray-500"></div>
+            <div class="flex">
+                <select className="ql-color" defaultValue="false">
+                    <option value="#000000">#000000</option>
+                    <option value="#06060a">#06060a</option>
+                    <option value="#13131f">#13131f</option>
+                    <option value="#0f1119">#0f1119</option>
+                    <option value="#EF5350">#EF5350</option>
+                    <option value="#16a34a">#16a34a</option>
+                    <option value="#15171e">#15171e</option>
+                    <option value="#cbd5e1">#cbd5e1</option>
+                    <option value="#e2e8f0">#e2e8f0</option>
+                    <option value="#94a3eb">#94a3eb</option>
+                    <option value="#94a3b8">#94a3b8</option>
+                </select>
+                <select className="ql-background" defaultValue="false">
+                    <option value="#00000000">#00000000</option>
+                    <option value="#06060a">#06060a</option>
+                    <option value="#13131f">#13131f</option>
+                    <option value="#0f1119">#0f1119</option>
+                    <option value="#EF5350">#EF5350</option>
+                    <option value="#16a34a">#16a34a</option>
+                    <option value="#15171e">#15171e</option>
+                    <option value="#cbd5e1">#cbd5e1</option>
+                    <option value="#e2e8f0">#e2e8f0</option>
+                    <option value="#94a3eb">#94a3eb</option>
+                    <option value="#94a3b8">#94a3b8</option>
+                </select>
+            </div>
+            <div class="h-6 w-0.5 rounded-full bg-gray-500"></div>
+            <div class="flex">
+                <button class="ql-script" value="sub"></button>
+                <button class="ql-script" value="super"></button>
+                <button class="ql-clean"></button>
+            </div>
         </div>
     </div>
 </template>
@@ -118,10 +131,11 @@ export default {
 }
 .ql-toolbar {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center !important;
     align-items: center !important;
     z-index: 32;
-    background-color: rgb(200, 200, 200);
+    background-color: #c8c8c8;
     border-radius: 4px;
     padding: 4px 8px !important;
 
@@ -172,6 +186,7 @@ export default {
 
 .ql-editor {
     width: 100% !important;
+    min-width: 10px !important;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 16px !important;
     line-height: 20px !important;

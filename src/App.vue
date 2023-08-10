@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import GlobalStoreDebug from "@/components/GlobalStoreDebug.vue";
+import GlobalStoreDebug from "@/components/helpers/GlobalStoreDebug.vue";
 export default {
     name: "App",
     components: { GlobalStoreDebug },

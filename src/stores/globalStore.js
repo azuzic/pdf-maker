@@ -9,15 +9,18 @@ let wait = function (seconds) {
 
 export const useGlobalStore = defineStore("globalStore", {
     state: () => ({
+
         refresh: true,
-        refreshToolbar: true,
         selected: null,
         type: null,
         entered: false,
-        enabled: true,
+
         margin: {c:false,X:0.5, Y:0.5},
+
         PredefinedPDFelements: [],
-        PDFelements: []
+        PDFelements: [],
+
+        selectedItem: null
     }),
     actions: {
         async resetPredefinedPDFelements() {
@@ -26,6 +29,11 @@ export const useGlobalStore = defineStore("globalStore", {
                 {
                     id: "1",
                     type: "text",
+                    innerHTML: "TEXT",
+                    widthType: "Fit",
+                    width: "100",
+                    positionType: "Static",
+                    classes: 'flex-none'
                 },
                 {
                     id: "2",
@@ -36,6 +44,7 @@ export const useGlobalStore = defineStore("globalStore", {
                     type: "image",
                 },
             ]
+            this.PDFelements = [...new Set(this.PDFelements)];
             await this.update();
         },
         async update() {
@@ -48,14 +57,22 @@ export const useGlobalStore = defineStore("globalStore", {
                 await nextTick();
             }
         },
-        async setSelected(value, type) {
-            console.log("aaa: "+value);
-            if (this.selected == value) return;
+        async setSelected(item, type) {
+            if (item == null) {
+                this.selectedItem = null;
+                this.type = null;
+                this.selected = null;
+                return;
+            }
+            if (this.selected == item.id) return;
             this.type = null;
             this.selected = null;
             await this.executeNextTickMultipleTimes(5);
             this.type = type;
-            this.selected = value;
+            this.selected = item.id;
+        },
+        async wait(value) {
+            await wait(value);
         }
     }
 });
