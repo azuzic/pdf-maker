@@ -1,6 +1,6 @@
 <script setup>
 import { useGlobalStore } from '@/stores/globalStore'
-import Quill_toolbar_height from '@/components/PDF_Elements/Quill_toolbar_height.vue';
+import Quill_toolbar_height from '@/components/helpers/Quill_toolbar_height.vue';
 const globalStore = useGlobalStore();
 </script>
 <template>

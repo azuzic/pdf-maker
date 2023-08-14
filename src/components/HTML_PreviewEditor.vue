@@ -18,7 +18,7 @@
 
                         <div class="bg-white h-full w-full relative text-black rounded"
                             :style="'padding: '+(globalStore.margin.Y+0.25)+'in '+(globalStore.margin.X+0.25)+'in;'">
-                            <draggable @change="globalStore.resetPredefinedPDFelements()" v-model="globalStore.PDFelements" item-key="id" group="pdfelements" v-if="globalStore.refresh"
+                            <draggable @change="checkList" v-model="globalStore.PDFelements" item-key="id" group="pdfelements" v-if="globalStore.refresh"
                                 class="w-full h-full leading-5" :class="globalStore.margin.c ? 'border-2 border-dashed rounded border-amber-600 -my-[2px]' : ''">
                                 <template #item="{ element }">
                                     <PDF_Element :item="element"/>
@@ -39,7 +39,7 @@ import { useGlobalStore } from '@/stores/globalStore'
 import Slider from '@vueform/slider'
 import draggable from 'vuedraggable'
 import PDF_Element from '@/components/PDF_Element.vue';
-import Quill_toolbar from '@/components/PDF_Elements/Quill_toolbar.vue';
+import Quill_toolbar from '@/components/helpers/Quill_toolbar.vue';
 import Vertical_arrow from '@/components/helpers/vertical_arrow.vue';
 import Horizontal_arrow from '@/components/helpers/horizontal_arrow.vue';
 export default {
@@ -63,6 +63,16 @@ export default {
         async checkMove(){
             await this.globalStore.resetPredefinedPDFelements();
         },
+        checkList(change) {
+            if (change.added) {
+                let temp = JSON.parse(JSON.stringify(change.added.element)); 
+                temp.list[0].parentID = temp.id;
+                let index = this.globalStore.PDFelements.findIndex(item => item.id === temp.id);
+                if (index !== -1) this.globalStore.PDFelements[index] = temp;
+                else console.log("Element with ID " + targetId + " not found.");                
+            }
+            this.globalStore.resetPredefinedPDFelements()
+        }
     }
 }
 </script>

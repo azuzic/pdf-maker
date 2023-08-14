@@ -8,7 +8,7 @@
                 <PDF_Element :item="element" :main="true"/>
             </template>
         </draggable>
-        <div class="p-2 flex flex-col justify-center items-center w-full">
+        <div class="p-2 flex flex-col justify-center items-center w-full gap-2">
             <div class="w-full">
                 <div class="w-full flex mb-3 text-lg font-bold text-slate-300">PDF margin Y:</div>
                 <Slider @start="globalStore.margin.c = true" @end="globalStore.margin.c = false"
@@ -17,6 +17,12 @@
                 <Slider @start="globalStore.margin.c = true" @end="globalStore.margin.c = false"
                     class="w-full mb-4" v-model="globalStore.margin.X" :min="0" :max="1" :step="-1" showTooltip="focus" :merge="0.01" :lazy="false" />
             </div>
+            <input type="file" ref="fileInput" class="px-4 py-2 w-full bg-emerald-600 hover:bg-emerald-500 rounded-md font-bold text-emerald-950" 
+                @change="loadTemplate"/>
+            <button class="px-4 py-2 w-full bg-emerald-600 hover:bg-emerald-500 rounded-md font-bold text-emerald-950" 
+                @click="saveTemplate()">
+                Save Template
+            </button>
             <button class="px-4 py-2 w-full bg-emerald-600 hover:bg-emerald-500 rounded-md font-bold text-emerald-950" 
                 @click="savePDF()">
                 Save PDF
@@ -48,9 +54,35 @@ export default {
         async savePDF() {
             await this.$htmlToPaper('printMe');
         },
+        async loadTemplate(event) {
+            console.log(event);
+            const file = event.target.files[0];
+            if (file) {
+                const text = await file.text();
+                this.globalStore.PDFelements = JSON.parse(text);
+            }
+        },
+        async saveTemplate() {
+            const variableContent = JSON.stringify(this.globalStore.PDFelements);
+            const filename = 'PDFtemplate.txt';
+
+            const blob = new Blob([variableContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.style.display = 'none';
+
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        },
         clone( item ) {
             let clone = JSON.parse(JSON.stringify(item));
             clone.id = cryptoRandomString({ length: 32, type: 'alphanumeric' });
+            clone.list[0].id = cryptoRandomString({ length: 32, type: 'alphanumeric' });
+            clone.list[0].parentID = clone.id;
             return clone;
         },
         pullFunction() {

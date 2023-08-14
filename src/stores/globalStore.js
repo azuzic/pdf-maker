@@ -28,23 +28,77 @@ export const useGlobalStore = defineStore("globalStore", {
             this.PredefinedPDFelements = [
                 {
                     id: "1",
-                    type: "text",
-                    innerHTML: "TEXT",
-                    widthType: "Fit",
-                    width: "100",
-                    positionType: "Static",
-                    classes: 'flex-none'
+                    justify: "Start",
+                    list: [
+                        {
+                            parentID: "1",
+                            id: "11",
+                            type: "text",
+                            innerHTML: "TEXT",
+
+                            widthType: "Fit",
+                            width: "100",
+                            widthClasses: 'flex-none',
+
+                            absolute: false,
+                            top: 0,
+                            left: 0,
+                            initialX: 0,
+                            initialY: 0,
+                            offsetX: 0,
+                            offsetY: 0
+                        },
+                    ]
                 },
                 {
                     id: "2",
-                    type: "line",
+                    justify: "Center",
+                    list: [
+                        {
+                            parentID: "2",
+                            id: "21",
+                            type: "image",
+                            url: "",
+
+                            widthType: "Grow",
+                            width: "500",
+                            widthClasses: 'flex-none',
+
+                            absolute: false,
+                            top: 0,
+                            left: 0,
+                            initialX: 0,
+                            initialY: 0,
+                            offsetX: 0,
+                            offsetY: 0
+                        },
+                    ]
                 },
                 {
                     id: "3",
-                    type: "image",
+                    justify: "Start",
+                    list: [
+                        {
+                            parentID: "3",
+                            id: "31",
+                            type: "line",
+                            dashed: false,
+
+                            widthType: "Grow",
+                            width: "500",
+                            widthClasses: 'flex-none',
+
+                            absolute: false,
+                            top: 0,
+                            left: 0,
+                            initialX: 0,
+                            initialY: 0,
+                            offsetX: 0,
+                            offsetY: 0
+                        },
+                    ]
                 },
             ]
-            this.PDFelements = [...new Set(this.PDFelements)];
             await this.update();
         },
         async update() {

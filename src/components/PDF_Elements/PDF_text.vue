@@ -12,7 +12,9 @@
                 <QuillEditor v-if="globalStore.selected == item.id" v-model:content="innerHTML" contentType="html" theme="snow" toolbar="#epictoolbar"/>
             </div>
             <i v-if="globalStore.selected == item.id" @click="deleteSelf()" 
-            class="fa-solid fa-xmark-circle text-rose-600 hover:text-rose-500 cursor-pointer text-xl absolute -top-2 -right-2"></i>
+                class="fa-solid fa-xmark-circle text-rose-600 hover:text-rose-500 cursor-pointer text-xl absolute -top-2 -right-2"></i>
+            <i v-if="globalStore.selected == item.id && item.absolute" @mousedown="startDrag" @mouseup="stopDrag" @mouseleave="stopDrag" @mousemove="drag"
+                class="fa-solid fa-up-down-left-right text-green-600 hover:text-green-500 cursor-pointer text-xl absolute -top-2 -left-2 z-10"></i>
         </div>
     </div>
     
@@ -27,7 +29,6 @@ export default {
     props: {
         item: Object,
         main: false,
-        id: String,
         list: Array,
     },
     data() {
@@ -35,6 +36,12 @@ export default {
             text: "TEXT",
             innerHTML: this.item.innerHTML,
             showQuill: false,
+            isDragging: false,
+            initialX: 0,
+            initialY: 0,
+            offsetX: 0,
+            offsetY: 0,
+            el: null,
         };
     },
     setup() {
@@ -47,7 +54,45 @@ export default {
     methods: {
         deleteSelf() {
             this.$emit('deleteItem', this.item.id);
-        }
+        },
+        startDrag(event) {
+            this.el = document.getElementById('element_'+this.item.id);
+            this.isDragging = true;
+            if (this.offsetX == 0) {
+
+                if (this.globalStore.selectedItem.initialX != 0) {
+                    this.initialX = this.globalStore.selectedItem.initialX;
+                    this.initialY = this.globalStore.selectedItem.initialY;
+                    this.offsetX = this.globalStore.selectedItem.offsetX;
+                    this.offsetY = this.globalStore.selectedItem.offsetY;
+                } else {
+                    this.initialX = event.clientX;
+                    this.initialY = event.clientY;
+                    this.offsetX = this.initialX - event.target.offsetLeft;
+                    this.offsetY = this.initialY - event.target.offsetTop;
+
+                    this.globalStore.selectedItem.initialX = this.initialX;
+                    this.globalStore.selectedItem.initialY = this.initialY;
+                    this.globalStore.selectedItem.offsetX = this.offsetX;
+                    this.globalStore.selectedItem.offsetY = this.offsetY;
+                }
+            }
+        },
+        drag(event) {
+            if (this.isDragging) {
+                const newX = event.clientX - this.offsetX+5;
+                const newY = event.clientY - this.offsetY+9;
+
+                this.el.style.left = newX + 'px';
+                this.el.style.top = newY + 'px';
+
+                this.globalStore.selectedItem.left = newX;
+                this.globalStore.selectedItem.top = newY;
+            }
+        },
+        stopDrag() {
+            this.isDragging = false;
+        },
     },
     computed: {
         computedInnerHTML() {

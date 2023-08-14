@@ -16,15 +16,10 @@ const globalStore = useGlobalStore();
             <input type="text" class="bg-slate-50 bg-opacity-5 rounded px-2 w-full outline-none truncate" 
             readonly :value="globalStore.selectedItem.type">
         </div>
-        <div class="flex gap-2">
-            <div class="font-bold">Value: </div> 
-            <input type="text" class="bg-slate-50 bg-opacity-5 rounded px-2 w-full outline-none truncate" 
-            readonly :value="globalStore.selectedItem.innerHTML">
-        </div>
     </div>
 </template>
 <script>
 export default {
-    name: "element_data"
+    name: "element_settings_data"
 }
 </script>
