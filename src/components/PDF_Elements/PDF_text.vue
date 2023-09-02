@@ -1,10 +1,10 @@
 <template>
     <div class="relative" @mouseup="globalStore.setSelected(item, main ? null : item.type)" 
-        @mouseenter="globalStore.entered = true" @mouseleave="globalStore.entered = false">
+        @mouseenter="globalStore.entered = true; globalStore.highlighted = item.id; scrollToElement(item.id)" @mouseleave="globalStore.entered = false; globalStore.highlighted = ''">
         <div v-if="main" class="flex justify-center items-center rounded-lg bg-emerald-600 hover:bg-emerald-500 hover:cursor-grab py-2 w-40">
             <div class="text-lg font-bold text-emerald-50">TEXT</div>
         </div>
-        <div class="relative mb-2" v-else>
+        <div class="relative mb-2" :class="globalStore.highlighted == item.id && globalStore.selected != item.id ? 'outline-dotted outline-1' : ''" v-else>
             <div ref="innerHTML" :innerHTML="computedInnerHTML" class="outline-none bg-slate-300 bg-opacity-0 border-0 rounded 
                 py-1 -my-1 px-2 pdf-text hover:bg-opacity-25 w-full"></div>
             <div class="absolute top-1 left-0 w-full"
@@ -93,6 +93,10 @@ export default {
         stopDrag() {
             this.isDragging = false;
         },
+        scrollToElement(id) {
+            const element = document.getElementById('child_'+id);
+            if (element != null) element.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+        }
     },
     computed: {
         computedInnerHTML() {

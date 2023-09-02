@@ -1,11 +1,11 @@
 <template>
     <div class="relative" @mouseup="globalStore.setSelected(item, main ? null : item.type); globalStore.selectedItem = item;" 
-        @mouseenter="globalStore.entered = true" @mouseleave="globalStore.entered = false">
+        @mouseenter="globalStore.entered = true; globalStore.highlighted = item.id; scrollToElement(item.id)" @mouseleave="globalStore.entered = false; globalStore.highlighted = ''">
         <div v-if="main" class="flex justify-center items-center rounded-lg bg-emerald-600 hover:bg-emerald-500 hover:cursor-grab py-2 w-40">
             <div class="text-lg font-bold text-emerald-50">IMAGE</div>
         </div>
-        <div class="relative mb-2" v-else>
-            <img :class="globalStore.selected == item.id ? 'border-2 rounded' : 'hover:border'" :src="'https://fipu.unipu.hr/_pub/themes_static/unipu2020/fipu/icons/fipu_hr.png'" alt="">
+        <div class="relative mb-2" :class="globalStore.highlighted == item.id && globalStore.selected != item.id ? 'outline-dotted outline-1' : ''" v-else>
+            <img :class="globalStore.selected == item.id ? 'outline rounded outline-1' : 'hover:outline-dotted outline-1'" :src="'https://fipu.unipu.hr/_pub/themes_static/unipu2020/fipu/icons/fipu_hr.png'" alt="">
             <i v-if="globalStore.selected == item.id" @click="deleteSelf()" 
                 class="fa-solid fa-xmark-circle text-rose-600 hover:text-rose-500 cursor-pointer text-xl absolute -top-2 -right-2 z-10"></i>
             <i v-if="globalStore.selected == item.id && item.absolute" @mousedown="startDrag" @mouseup="stopDrag" @mouseleave="stopDrag" @mousemove="drag"
@@ -81,6 +81,10 @@ export default {
         stopDrag() {
             this.isDragging = false;
         },
+        scrollToElement(id) {
+            const element = document.getElementById('child_'+id);
+            if (element != null) element.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+        }
     },
 }
 </script>

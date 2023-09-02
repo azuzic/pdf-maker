@@ -8,7 +8,7 @@ const globalStore = useGlobalStore()
         <div class="p-4 flex flex-col bg-black bg-opacity-90 shadow-xl rounded-xl h-full w-full text-slate-400">
             <div class="text-center text-2xl font-bold"> DEBUG INFO </div>
             <hr/>
-            <div class="overflow-scroll">
+            <div class="overflow-auto scrollbar-thin scrollbar-track-slate-800 scrollbar-thumb-slate-600 hover:scrollbar-thumb-slate-400">
                 <vue-json-pretty showIcon :deep="2" :data="globalStore.$state" />
             </div>
         </div>
@@ -36,33 +36,6 @@ export default {
 </script>
 
 <style>
-/*Dark Scrollbar*/
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-.vue-labelInput::-webkit-scrollbar {
-    width: 0px;
-}
-
-::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #A5C4C5;
-    border: solid 1px #010910;
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #50A45E;
-}
-
-::-webkit-scrollbar-corner {
-    background: #0000;
-}
-
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,

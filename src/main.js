@@ -12,9 +12,9 @@ const options = {
     'scrollbars=yes'
   ],
   styles: [
-    'dist/output.css',
-    'dist/qcss.css',
-    'dist/katex.min.css',
+    './src/css/tailwind.css',
+    './src/css/qcss.css',
+    './src/css/katex.min.css',
   ],
   timeout: 1000, // default timeout before the print window appears
   autoClose: true, // if false, the window will not close after printing

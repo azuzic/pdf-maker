@@ -16,6 +16,7 @@
     "jspdf": "^2.5.1",
     "katex": "^0.16.8",
     "pinia": "^2.1.6",
+    "tailwind-scrollbar": "^3.0.5",
     "vue": "^3.3.4",
     "vue-html-to-paper": "^2.0.3",
     "vue-json-pretty": "^2.2.4",

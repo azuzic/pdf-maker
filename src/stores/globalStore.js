@@ -12,6 +12,7 @@ export const useGlobalStore = defineStore("globalStore", {
 
         refresh: true,
         selected: null,
+        highlighted: null,
         type: null,
         entered: false,
 
@@ -124,6 +125,7 @@ export const useGlobalStore = defineStore("globalStore", {
             await this.executeNextTickMultipleTimes(5);
             this.type = type;
             this.selected = item.id;
+            this.selectedItem = item;
         },
         async wait(value) {
             await wait(value);

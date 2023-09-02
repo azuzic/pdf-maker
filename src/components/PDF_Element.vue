@@ -12,7 +12,7 @@
             @change="updateList" :clone="clone" :group="{ name: 'pdfelements', pull: pullFunction }">
             <template #item="{ element }">
                 <div :id="'element_'+element.id"
-                    :class="[element.type=='text' ? element.widthClasses : '', element.absolute ? ' absolute ' : '']" 
+                    :class="[element.type=='text' ? element.widthClasses : '', element.absolute ? ' absolute z-20' : '']" 
                     :style="{
                         width: element.widthClasses === 'w' ? (element.width + 'px') : (element.type=='line' ? '100%' : 'auto') ,
                         left: element.absolute ? (element.left + 'px') : 'auto',
