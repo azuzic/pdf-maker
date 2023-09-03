@@ -1,5 +1,5 @@
 <template>
-    <div class="flex justify-center grow overflow-hidden" @mousedown="globalStore.entered ? '' : globalStore.setSelected(null, null)">
+    <div class="flex justify-center grow overflow-hidden" @mousedown="globalStore.entered ? this.moving = null : globalStore.setSelected(null, null)">
         <div class="flex flex-col w-full relative overflow-auto scrollbar-thin scrollbar-track-slate-600 scrollbar-thumb-slate-400 hover:scrollbar-thumb-slate-500">
             
             <div class="w-full flex flex-col justify-center items-center z-50 bg-[#e4e4e4] mb-2">
@@ -15,11 +15,10 @@
                         
                         <Vertical_arrow v-if="globalStore.margin.c"/>
                         <Horizontal_arrow v-if="globalStore.margin.c"/>
-
                         <div class="bg-white h-full w-full relative text-black rounded"
                             :style="'padding: '+(globalStore.margin.Y+0.25)+'in '+(globalStore.margin.X+0.25)+'in;'">
                             <draggable @change="checkList" v-model="globalStore.PDFelements" item-key="id" group="pdfelements" v-if="globalStore.refresh"
-                                class="w-full h-full leading-5" :class="globalStore.margin.c ? 'border-2 border-dashed rounded border-amber-600 -my-[2px]' : ''">
+                                class="w-full h-full leading-5 flex flex-col py-2" :class="globalStore.margin.c ? 'border-2 border-dashed rounded border-amber-600 -my-[2px]' : ''">
                                 <template #item="{ element }">
                                     <PDF_Element :item="element"/>
                                 </template>

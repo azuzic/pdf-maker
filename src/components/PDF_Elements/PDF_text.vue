@@ -1,14 +1,14 @@
 <template>
-    <div class="relative" @mouseup="globalStore.setSelected(item, main ? null : item.type)" 
+    <div class="relative" @mouseup="globalStore.setSelected(item, main ? null : item.type); move = false"
         @mouseenter="globalStore.entered = true; globalStore.highlighted = item.id; scrollToElement(item.id)" @mouseleave="globalStore.entered = false; globalStore.highlighted = ''">
-        <div v-if="main" class="flex justify-center items-center rounded-lg bg-emerald-600 hover:bg-emerald-500 hover:cursor-grab py-2 w-40">
+        <div v-if="main || globalStore.moving == item.id" class="flex justify-center items-center rounded-lg bg-emerald-600 hover:bg-emerald-500 hover:cursor-grab py-2 w-40">
             <div class="text-lg font-bold text-emerald-50">TEXT</div>
         </div>
-        <div class="relative mb-2" :class="globalStore.highlighted == item.id && globalStore.selected != item.id ? 'outline-dotted outline-1' : ''" v-else>
+        <div class="relative my-[3px]" :class="globalStore.highlighted == item.id && globalStore.selected != item.id ? 'outline-dotted outline-1' : ''" v-else>
             <div ref="innerHTML" :innerHTML="computedInnerHTML" class="outline-none bg-slate-300 bg-opacity-0 border-0 rounded 
-                py-1 -my-1 px-2 pdf-text hover:bg-opacity-25 w-full"></div>
+                -my-[3px] px-2 pdf-text hover:bg-opacity-25 w-full"></div>
             <div class="absolute top-1 left-0 w-full"
-                :class="globalStore.selected == item.id ? 'h-full py-1 -my-1 px-2 bg-gray-400 bg-opacity-25 rounded' : 'h-0 p-0 m-0 bg-opacity-0'">
+                :class="globalStore.selected == item.id ? 'h-full -my-1 px-2 bg-gray-400 bg-opacity-25 rounded' : 'h-0 p-0 m-0 bg-opacity-0'">
                 <QuillEditor v-if="globalStore.selected == item.id" v-model:content="innerHTML" contentType="html" theme="snow" toolbar="#epictoolbar"/>
             </div>
             <i v-if="globalStore.selected == item.id" @click="deleteSelf()" 
@@ -16,6 +16,11 @@
             <i v-if="globalStore.selected == item.id && item.absolute" @mousedown="startDrag" @mouseup="stopDrag" @mouseleave="stopDrag" @mousemove="drag"
                 class="fa-solid fa-up-down-left-right text-green-600 hover:text-green-500 cursor-pointer text-xl absolute -top-2 -left-2 z-10"></i>
         </div>
+        <i v-if="globalStore.highlighted == item.id && globalStore.selected != item.id" 
+            @mousedown="move = true; globalStore.moving = item.id;"
+            class="fa-solid fa-up-down-left-right text-sky-400 hover:text-sky-300 cursor-pointer text-sm absolute bg-sky-950 p-1 rounded-full
+                    -top-2 -left-2 z-10 handle">
+        </i>
     </div>
     
 </template>
@@ -31,6 +36,10 @@ export default {
         main: false,
         list: Array,
     },
+    setup() {
+        const globalStore = useGlobalStore();
+        return { globalStore };
+    },
     data() {
         return {
             text: "TEXT",
@@ -42,14 +51,13 @@ export default {
             offsetX: 0,
             offsetY: 0,
             el: null,
+            move: true,
         };
     },
-    setup() {
-        const globalStore = useGlobalStore();
-        return { globalStore };
-    },
-    mounted() {
+    async mounted() {
         window.katex = katex;
+        await this.globalStore.wait(0.1);
+        this.move = false;
     },
     methods: {
         deleteSelf() {

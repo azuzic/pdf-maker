@@ -1,6 +1,6 @@
 <template>
     <div class="relative">
-        <draggable v-if="!main" class="flex w-full" :id="'element_'+item.id" 
+        <draggable v-if="!main" class="flex w-full" :id="'element_'+item.id" handle=".handle" 
             :class="[
                 item.justify=='Start' ? 'justify-start':'', 
                 item.justify=='Center' ? 'justify-center':'', 
@@ -11,8 +11,8 @@
             v-model="item.list" item-key="id" group="pdfelements" :disabled="globalStore.selected != null"
             @change="updateList" :clone="clone" :group="{ name: 'pdfelements', pull: pullFunction }">
             <template #item="{ element }">
-                <div :id="'element_'+element.id"
-                    :class="[element.type=='text' ? element.widthClasses : '', element.absolute ? ' absolute z-20' : '']" 
+                <div :id="'element_'+element.id" class="my-[3px]"
+                    :class="[element.type=='text' ? element.widthClasses : '', element.absolute ? ' absolute z-20' : 'relative']" 
                     :style="{
                         width: element.widthClasses === 'w' ? (element.width + 'px') : (element.type=='line' ? '100%' : 'auto') ,
                         left: element.absolute ? (element.left + 'px') : 'auto',

@@ -15,6 +15,7 @@ export const useGlobalStore = defineStore("globalStore", {
         highlighted: null,
         type: null,
         entered: false,
+        moving: null,
 
         margin: {c:false,X:0.5, Y:0.5},
 
@@ -113,6 +114,7 @@ export const useGlobalStore = defineStore("globalStore", {
             }
         },
         async setSelected(item, type) {
+            this.moving = null;
             if (item == null) {
                 this.selectedItem = null;
                 this.type = null;

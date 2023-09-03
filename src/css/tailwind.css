@@ -1394,6 +1394,10 @@ video {
   text-decoration-line: underline;
 }
 
+.no-underline {
+  text-decoration-line: none;
+}
+
 .caret-transparent {
   caret-color: transparent;
 }
