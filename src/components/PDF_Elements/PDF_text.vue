@@ -16,7 +16,7 @@
             <i v-if="globalStore.selected == item.id && item.absolute" @mousedown="startDrag" @mouseup="stopDrag" @mouseleave="stopDrag" @mousemove="drag"
                 class="fa-solid fa-up-down-left-right text-green-600 hover:text-green-500 cursor-pointer text-xl absolute -top-2 -left-2 z-10"></i>
         </div>
-        <i v-if="globalStore.highlighted == item.id && globalStore.selected != item.id && !main" 
+        <i v-if="globalStore.highlighted == item.id && globalStore.selected != item.id && !main && globalStore.selected == null" 
             @mousedown="move = true; globalStore.moving = item.id;"
             class="fa-solid fa-up-down-left-right text-sky-400 hover:text-sky-300 cursor-pointer text-sm absolute bg-sky-950 p-1 rounded-full
                     -top-2 -left-2 z-10 handle">

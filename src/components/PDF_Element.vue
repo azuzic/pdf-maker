@@ -1,6 +1,6 @@
 <template>
-    <div class="relative hover:outline-dotted outline-1" :id="'parent_element_'+item.id" 
-        @mouseover="globalStore.entered = true; globalStore.highlighted = item.id; scrollToElement(item.id)"
+    <div class="relative hover:outline-dotted outline-1 handle" :id="'parent_element_'+item.id" 
+        @mouseover="globalStore.entered ? '' : globalStore.highlighted = item.id; scrollToElement(item.id)"
         :class="[
             item.heightType=='Fit' ? 'flex-none':'', 
             item.heightType=='Divide' ? 'flex-1':'', 
