@@ -5,7 +5,7 @@
             <div class="text-lg font-bold text-emerald-50">LINE</div>
         </div>
         <div class="relative py-1" :class="[globalStore.selected == item.id ? 'bg-slate-100' : 'hover:bg-slate-100',
-                globalStore.highlighted == item.id && globalStore.selected != item.id ? 'outline-dotted outline-1' : '']" v-else>
+                globalStore.highlighted == item.id && globalStore.selected != item.id ? 'outline-dotted outline-1 rounded' : '']" v-else>
             <div :class="item.dashed ? 'border border-gray-300 border-dashed rounded-full' : 'border border-black rounded-full'"></div>
             <i v-if="globalStore.selected == item.id" @click="deleteSelf()" 
                 class="fa-solid fa-xmark-circle text-rose-600 hover:text-rose-500 cursor-pointer text-xl absolute -top-2 -right-2 z-10"></i>

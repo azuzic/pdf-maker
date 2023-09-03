@@ -56,8 +56,16 @@ export default {
                 let temp = JSON.parse(JSON.stringify(change.added.element.list[0]));
                 temp.parentID = this.parent.id;
                 let index = this.parent.list.findIndex(item => item.id === change.added.element.id);
-                if (index !== -1) this.parent.list[index] = temp;
-                else console.log("Element with ID " + targetId + " not found.");                
+                if (index !== -1) {
+                    this.parent.list[index] = temp;
+                    this.parent.list.splice(index, 1);
+                }
+                else console.log("Element with ID " + index + " not found."); 
+                let i = index;
+                change.added.element.list.forEach(element => {
+                    this.parent.list.splice(i, 0, element);
+                    i++;
+                });     
             }
             this.deleteItem(0);
         },

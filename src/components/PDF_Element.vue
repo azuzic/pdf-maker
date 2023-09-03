@@ -1,8 +1,11 @@
 <template>
-    <div class="relative" :id="'parent_element_'+item.id" :class="[
+    <div class="relative hover:outline-dotted outline-1" :id="'parent_element_'+item.id" 
+        @mouseover="globalStore.entered = true; globalStore.highlighted = item.id; scrollToElement(item.id)"
+        :class="[
             item.heightType=='Fit' ? 'flex-none':'', 
             item.heightType=='Divide' ? 'flex-1':'', 
-            item.heightType=='Grow' ? 'grow':''
+            item.heightType=='Grow' ? 'grow':'',
+            globalStore.highlighted == item.id && globalStore.selected != item.id ? 'outline-dotted outline-1 rounded' : ''
             ]"
             :style="{
                 height: item.heightType === 'Set' ? (item.height + 'px') : '',
@@ -78,18 +81,32 @@ export default {
             return clone;
         },
         updateList(change) {
+            console.log(change);
             if (change.added) {
                 let temp = JSON.parse(JSON.stringify(change.added.element.list[0]));
                 temp.parentID = this.item.id;
                 let index = this.item.list.findIndex(item => item.id === change.added.element.id);
-                if (index !== -1) this.item.list[index] = temp;
-                else console.log("Element with ID " + targetId + " not found.");                
+                if (index !== -1) {
+                    this.item.list[index] = temp;
+                    this.item.list.splice(index, 1);
+                }
+                else console.log("Element with ID " + index + " not found."); 
+                let i = index;
+                change.added.element.list.forEach(element => {
+                    element.parentID = this.item.id;
+                    this.item.list.splice(i, 0, element);
+                    i++;
+                });            
             }
             this.deleteItem(0);
         },
         pullFunction() {
             return "clone";
         },
+        scrollToElement(id) {
+            const element = document.getElementById('child_'+id);
+            if (element != null) element.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+        }
     },
 }
 </script>

@@ -4,7 +4,7 @@
         <div v-if="main || (globalStore.moving == item.id && move)" class="flex justify-center items-center rounded-lg bg-emerald-600 hover:bg-emerald-500 hover:cursor-grab py-2 w-40">
             <div class="text-lg font-bold text-emerald-50">TEXT</div>
         </div>
-        <div class="relative my-[3px]" :class="globalStore.highlighted == item.id && globalStore.selected != item.id ? 'outline-dotted outline-1' : ''" v-else>
+        <div class="relative my-[3px]" :class="globalStore.highlighted == item.id && globalStore.selected != item.id ? 'outline-dotted outline-1 rounded' : ''" v-else>
             <div ref="innerHTML" :innerHTML="computedInnerHTML" class="outline-none bg-slate-300 bg-opacity-0 border-0 rounded 
                 -my-[3px] px-2 pdf-text hover:bg-opacity-25 w-full"></div>
             <div class="absolute top-1 left-0 w-full"

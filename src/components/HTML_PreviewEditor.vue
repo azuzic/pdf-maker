@@ -17,7 +17,7 @@
                         <Horizontal_arrow v-if="globalStore.margin.c"/>
                         <div class="bg-white h-full w-full relative text-black rounded"
                             :style="'padding: '+(globalStore.margin.Y+0.25)+'in '+(globalStore.margin.X+0.25)+'in;'">
-                            <draggable @change="checkList" v-model="globalStore.PDFelements" item-key="id" group="pdfelements" v-if="globalStore.refresh"
+                            <draggable @change="checkList" v-model="globalStore.PDFelements" item-key="id" group="pdfelements" v-if="globalStore.refresh" handle=".handle"
                                 class="w-full h-full leading-5 flex flex-col py-1" :class="globalStore.margin.c ? 'border-2 border-dashed rounded border-amber-600 -my-[2px]' : ''">
                                 <template #item="{ element }">
                                     <PDF_Element :item="element"/>

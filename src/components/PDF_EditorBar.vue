@@ -93,7 +93,7 @@ export default {
                         "kraj_prakse": "1/3/2023",
                         "alokacija_potvrda": true,
                         "kontakt_potvrda": true,
-                        "poslodavac": "Sveučilište Jurja Dobile u Puli",
+                        "Poslodavac": "Sveučilište Jurja Dobile u Puli",
                         "mjesto_izvrsavanja": "Fipu Lab",
                     }
                 }
@@ -104,7 +104,6 @@ export default {
             await this.$htmlToPaper('printMe');
         },
         async loadTemplate(event) {
-            console.log(event);
             const file = event.target.files[0];
             if (file) {
                 const text = await file.text();

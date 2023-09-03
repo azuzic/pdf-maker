@@ -4,8 +4,10 @@
         <draggable :list="list" item-key="id" group="pdfelements" @change="checkList" v-if="globalStore.refresh">
             <template #item="{ element }">
                 <div class="bg-amber-400 px-2 rounded my-1 text-left truncate w-full ">
-                    <div class="truncate -mb-1 text-sm">
-                        ╓ <abbr class="no-underline" :title="element.id">{{ element.id }}</abbr>
+                    <div class="truncate -mb-1 text-sm rounded" :id="'child_'+element.id"
+                        :class=" globalStore.highlighted == element.id ? 'bg-lime-500' : 'bg-amber-700'"
+                        @mouseenter="globalStore.entered = true, globalStore.highlighted = element.id, scrollToElement(element.id)" @mouseleave="globalStore.entered = false, globalStore.highlighted = ''">
+                        ╓ <abbr class="no-underline font-bold" :title="element.id"> PARENT </abbr>
                     </div>
                     <Nested2 :list="list" :parent="element"/>
                 </div>
@@ -31,7 +33,7 @@ export default {
     },
     methods: {
         scrollToElement(id) {
-            const element = document.getElementById('element_'+id);
+            const element = document.getElementById('parent_element_'+id);
             element.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
         },
         checkList(change) {
