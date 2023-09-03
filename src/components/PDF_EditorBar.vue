@@ -33,6 +33,10 @@
                 @click="savePDF()">
                 Save PDF
             </button>
+            <button class="px-4 py-2 w-full bg-emerald-600 hover:bg-emerald-500 rounded-md font-bold text-emerald-950" 
+                @click="callService()">
+                Call Service
+            </button>
         </div>
     </div>
 </template>
@@ -44,6 +48,7 @@ import Slider from '@vueform/slider'
 import PDF_Element from "@/components/PDF_Element.vue"
 import cryptoRandomString from 'crypto-random-string';
 import nestedDraggable from "@/components/helpers/nested.vue";
+import { PDF } from "@/services";
 export default {
     name: "PDF_EditorBar",
     components: { Slider, draggable, PDF_Element, nestedDraggable },
@@ -61,6 +66,40 @@ export default {
         }
     },
     methods: {
+        async callService() {
+            const divContent = document.getElementById("pdf-content").innerHTML;
+            let response = await PDF.getPDF(
+                {
+                    "html": divContent,
+                    "data": { 
+                        "student_ime": "Luka",
+                        "student_prezime": "Blašković",
+                        "student_broj_mobitela": "0917217631",
+                        "student_OIB": "56768537128",
+                        "student_email": "luka.blaskovi@student.unipu.hr",
+                        "mentor_ime": "Nikola",
+                        "mentor_prezime": "Tanković",
+                        "mentor_email": "",
+                        "detaljan_opis_zadatka": 
+                        "Zadatak je bio izraditi konverzacijskog intent-recognition chatbot-a koji odgovara na " +
+                        "upite studenata ili služi za pokretanje nekih procesa (pr. prijava zadataka za praksu). " +
+                        "U prvoj fazi radio sam kategorizaciju studentskih upita u predefinirane topicse " +
+                        "koristeći spacy i sentence-transformer (SBERT) frameworke. Zatim je to bilo " +
+                        "nadograđeno da se korisniku vrati predefinirani odgovor najveće sličnosti s " +
+                        "postavljenim free-form pitanjem. Servis je implementiran u python asyncio dok je " +
+                        "jednostavan frontend izrađen u Vue.js-u.",
+                        "dogovoreni_broj_sati": 100,
+                        "pocetak_prakse": "1/2/2023",
+                        "kraj_prakse": "1/3/2023",
+                        "alokacija_potvrda": true,
+                        "kontakt_potvrda": true,
+                        "poslodavac": "Sveučilište Jurja Dobile u Puli",
+                        "mjesto_izvrsavanja": "Fipu Lab",
+                    }
+                }
+            );
+            console.log(response.data);
+        },
         async savePDF() {
             await this.$htmlToPaper('printMe');
         },

@@ -31,6 +31,10 @@ export const useGlobalStore = defineStore("globalStore", {
                 {
                     id: "1",
                     justify: "Start",
+
+                    heightType: "Fit",
+                    height: "100",
+
                     list: [
                         {
                             parentID: "1",
@@ -54,7 +58,11 @@ export const useGlobalStore = defineStore("globalStore", {
                 },
                 {
                     id: "2",
-                    justify: "Center",
+                    justify: "Start",
+
+                    heightType: "Fit",
+                    height: "100",
+                    
                     list: [
                         {
                             parentID: "2",
@@ -79,6 +87,10 @@ export const useGlobalStore = defineStore("globalStore", {
                 {
                     id: "3",
                     justify: "Start",
+
+                    heightType: "Fit",
+                    height: "100",
+                    
                     list: [
                         {
                             parentID: "3",
@@ -127,7 +139,6 @@ export const useGlobalStore = defineStore("globalStore", {
             await this.executeNextTickMultipleTimes(5);
             this.type = type;
             this.selected = item.id;
-            this.selectedItem = item;
         },
         async wait(value) {
             await wait(value);

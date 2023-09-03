@@ -1,5 +1,12 @@
 <template>
-    <div class="relative">
+    <div class="relative" :id="'parent_element_'+item.id" :class="[
+            item.heightType=='Fit' ? 'flex-none':'', 
+            item.heightType=='Divide' ? 'flex-1':'', 
+            item.heightType=='Grow' ? 'grow':''
+            ]"
+            :style="{
+                height: item.heightType === 'Set' ? (item.height + 'px') : '',
+            }">
         <draggable v-if="!main" class="flex w-full" :id="'element_'+item.id" handle=".handle" 
             :class="[
                 item.justify=='Start' ? 'justify-start':'', 
@@ -7,7 +14,9 @@
                 item.justify=='End' ? 'justify-end':'', 
                 item.justify=='Between' ? 'justify-between':'', 
                 item.justify=='Around' ? 'justify-around':'', 
-                item.justify=='Evenly' ? 'justify-evenly':'']"
+                item.justify=='Evenly' ? 'justify-evenly':''
+                ]"
+
             v-model="item.list" item-key="id" group="pdfelements" :disabled="globalStore.selected != null"
             @change="updateList" :clone="clone" :group="{ name: 'pdfelements', pull: pullFunction }">
             <template #item="{ element }">
@@ -61,7 +70,11 @@ export default {
         },
         clone( item ) { 
             let temp = JSON.parse(JSON.stringify(item));
-            let clone = { id: cryptoRandomString({ length: 32, type: 'alphanumeric' }), justify: this.item.justify, list:[temp] };
+            let clone = { id: cryptoRandomString({ length: 32, type: 'alphanumeric' }), 
+                            justify: this.item.justify, 
+                            heightType: this.item.heightType, 
+                            height: this.item.height, 
+                            list:[temp] };
             return clone;
         },
         updateList(change) {

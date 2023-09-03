@@ -37,13 +37,7 @@ export default {
     },
     methods: {
         updateJustify(value) {
-            this.justifyType = value.label;
-            if (this.globalStore.selectedItem == null) return;
-            
-            let el = document.getElementById('element_'+this.globalStore.selectedItem.parentID);
-            el.classList.remove('justify-start','justify-center','justify-end');
-            el.classList.add(value.value);
-            
+            this.justifyType = value.label;            
             this.globalStore.PDFelements[this.index].justify = value.label;
         },
     }

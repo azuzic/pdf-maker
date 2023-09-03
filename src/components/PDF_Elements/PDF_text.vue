@@ -1,7 +1,7 @@
 <template>
-    <div class="relative" @mouseup="globalStore.setSelected(item, main ? null : item.type); move = false"
+    <div class="relative" @mouseup="globalStore.setSelected(item, main ? null : item.type); globalStore.selectedItem = item; move = false"
         @mouseenter="globalStore.entered = true; globalStore.highlighted = item.id; scrollToElement(item.id)" @mouseleave="globalStore.entered = false; globalStore.highlighted = ''">
-        <div v-if="main || globalStore.moving == item.id" class="flex justify-center items-center rounded-lg bg-emerald-600 hover:bg-emerald-500 hover:cursor-grab py-2 w-40">
+        <div v-if="main || (globalStore.moving == item.id && move)" class="flex justify-center items-center rounded-lg bg-emerald-600 hover:bg-emerald-500 hover:cursor-grab py-2 w-40">
             <div class="text-lg font-bold text-emerald-50">TEXT</div>
         </div>
         <div class="relative my-[3px]" :class="globalStore.highlighted == item.id && globalStore.selected != item.id ? 'outline-dotted outline-1' : ''" v-else>
@@ -16,7 +16,7 @@
             <i v-if="globalStore.selected == item.id && item.absolute" @mousedown="startDrag" @mouseup="stopDrag" @mouseleave="stopDrag" @mousemove="drag"
                 class="fa-solid fa-up-down-left-right text-green-600 hover:text-green-500 cursor-pointer text-xl absolute -top-2 -left-2 z-10"></i>
         </div>
-        <i v-if="globalStore.highlighted == item.id && globalStore.selected != item.id" 
+        <i v-if="globalStore.highlighted == item.id && globalStore.selected != item.id && !main" 
             @mousedown="move = true; globalStore.moving = item.id;"
             class="fa-solid fa-up-down-left-right text-sky-400 hover:text-sky-300 cursor-pointer text-sm absolute bg-sky-950 p-1 rounded-full
                     -top-2 -left-2 z-10 handle">

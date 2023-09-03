@@ -8,7 +8,7 @@
                 <Quill_toolbar/>
             </div>
 
-            <div class="flex w-full justify-center pb-8  relative">
+            <div id="pdf-content" class="flex w-full justify-center pb-8  relative">
                 <div :style="'height:'+(height*scale)+'pt; width:'+(width*scale)+'pt;'">
                     <div id="printMe" class="w-[595pt] h-[842pt]" 
                         :style="'height:'+height+'pt; width:'+width+'pt; transform: scale('+scale+'); transform-origin: top left;'">
@@ -18,7 +18,7 @@
                         <div class="bg-white h-full w-full relative text-black rounded"
                             :style="'padding: '+(globalStore.margin.Y+0.25)+'in '+(globalStore.margin.X+0.25)+'in;'">
                             <draggable @change="checkList" v-model="globalStore.PDFelements" item-key="id" group="pdfelements" v-if="globalStore.refresh"
-                                class="w-full h-full leading-5 flex flex-col py-2" :class="globalStore.margin.c ? 'border-2 border-dashed rounded border-amber-600 -my-[2px]' : ''">
+                                class="w-full h-full leading-5 flex flex-col py-1" :class="globalStore.margin.c ? 'border-2 border-dashed rounded border-amber-600 -my-[2px]' : ''">
                                 <template #item="{ element }">
                                     <PDF_Element :item="element"/>
                                 </template>
