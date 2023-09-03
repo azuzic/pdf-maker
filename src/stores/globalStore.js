@@ -9,7 +9,6 @@ let wait = function (seconds) {
 
 export const useGlobalStore = defineStore("globalStore", {
     state: () => ({
-
         refresh: true,
         selected: null,
         highlighted: null,
@@ -127,6 +126,7 @@ export const useGlobalStore = defineStore("globalStore", {
         },
         async setSelected(item, type) {
             this.moving = null;
+            this.selectedItem = item;
             if (item == null) {
                 this.selectedItem = null;
                 this.type = null;

@@ -1,14 +1,14 @@
 <template>
     <div class="flex justify-center grow overflow-hidden" @mousedown="globalStore.entered ? this.moving = null : globalStore.setSelected(null, null)">
-        <div class="flex flex-col w-full relative overflow-auto scrollbar-thin scrollbar-track-slate-600 scrollbar-thumb-slate-400 hover:scrollbar-thumb-slate-500">
+        <div class="flex flex-col w-full relative">
             
-            <div class="w-full flex flex-col justify-center items-center z-50 bg-[#e4e4e4] mb-2">
+            <div class="w-full flex flex-col justify-center items-center z-50 bg-[#e4e4e4]">
                 <div class="flex justify-center text-4xl font-bold text-slate-900">PDF Editor:</div>
                 <Slider class="w-96 my-4 slider" v-model="scale" :min="0.5" :max="2" :step="-1" showTooltip="focus" :merge="0.01" :lazy="false" />
                 <Quill_toolbar/>
             </div>
 
-            <div id="pdf-content" class="flex w-full justify-center pb-8  relative">
+            <div id="pdf-content" class="flex w-full justify-center pb-8 pt-2 relative overflow-auto scrollbar-thin scrollbar-track-slate-600 scrollbar-thumb-slate-400 hover:scrollbar-thumb-slate-500">
                 <div :style="'height:'+(height*scale)+'pt; width:'+(width*scale)+'pt;'">
                     <div id="printMe" class="w-[595pt] h-[842pt]" 
                         :style="'height:'+height+'pt; width:'+width+'pt; transform: scale('+scale+'); transform-origin: top left;'">

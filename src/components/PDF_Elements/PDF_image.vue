@@ -1,5 +1,5 @@
 <template>
-    <div class="relative" @mouseup="globalStore.setSelected(item, main ? null : item.type); globalStore.selectedItem = item; move = false" 
+    <div class="relative" @mouseup="globalStore.setSelected(item, main ? null : item.type); move = false" 
         @mouseenter="globalStore.entered = true; globalStore.highlighted = item.id; scrollToElement(item.id)" @mouseleave="globalStore.entered = false; globalStore.highlighted = ''">
         <div v-if="main || (globalStore.moving == item.id && move)" class="flex justify-center items-center rounded-lg bg-emerald-600 hover:bg-emerald-500 hover:cursor-grab py-2 w-40">
             <div class="text-lg font-bold text-emerald-50">IMAGE</div>
