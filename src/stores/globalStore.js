@@ -15,6 +15,8 @@ export const useGlobalStore = defineStore("globalStore", {
         type: null,
         entered: false,
         moving: null,
+        showImagePrompt: false,
+        imageUrl: null,
 
         margin: {c:false,X:0.5, Y:0.5},
 
@@ -67,7 +69,7 @@ export const useGlobalStore = defineStore("globalStore", {
                             parentID: "2",
                             id: "21",
                             type: "image",
-                            url: "",
+                            url: "https://fipu.unipu.hr/_pub/themes_static/unipu2020/fipu/icons/fipu_hr.png",
 
                             widthType: "Grow",
                             width: "500",
@@ -142,6 +144,13 @@ export const useGlobalStore = defineStore("globalStore", {
         },
         async wait(value) {
             await wait(value);
-        }
+        },
+        changeURL(url, bool) {
+            this.showImagePrompt = false;
+            if (!bool)
+                return;
+            console.log("test");
+            this.imageUrl.url = url;
+        },
     }
 });

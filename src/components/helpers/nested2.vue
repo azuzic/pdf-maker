@@ -2,16 +2,31 @@
     <draggable v-model="parent.list" :id="'parent_'+parent.id" item-key="id" group="pdfelements" :disabled="globalStore.selected != null"
         @change="updateList" :clone="clone" :group="{ name: 'pdfelements', pull: pullFunction }">
         <template #item="{ element, index }">
-            <div class="-my-1 truncate cursor-pointer rounded select-none text-sm" @mouseup="globalStore.setSelected(element, element.type)" :id="'child_'+element.id"
+            <div class="-my-[3px] truncate cursor-pointer select-none text-sm border-x text-PE_dark_gray transition-all" 
+                @mouseup="globalStore.setSelected(element, element.type)" :id="'child_'+element.id"
                 @mouseenter="globalStore.entered = true, globalStore.highlighted = element.id, scrollToElement(element.id)" @mouseleave="globalStore.entered = false, globalStore.highlighted = ''"
-                :class="[globalStore.selected == element.id ? 'bg-lime-600' : 'bg-amber-600 hover:bg-lime-200',
-                        globalStore.highlighted == element.id && globalStore.selected != element.id ? 'bg-lime-300' : '']">
-                <span v-if="parent.list.length == index+1">╚═></span>
-                <span v-else>╠═></span>
-                <b v-if="element.type"><abbr class="no-underline" :title="element.type.toUpperCase() + ' ID: ' + element.id">{{ element.type.toUpperCase() }}:</abbr></b>
-                <span v-if="element.type == 'image'"> FIPU logo </span>
-                <span v-if="element.type == 'text'"><abbr class="no-underline" :title="element.innerHTML">{{ element.innerHTML }}</abbr></span>
+                :class="[(globalStore.highlighted == element.id && globalStore.selected != element.id) || globalStore.selected == element.id ? 
+                        'bg-PE_dark_accent_pressed border-PE_dark_accent_pressed' : 'border-PE_dark_blue'],
+                        parent.list.length == index+1 ? 'rounded-b border-b mb-[1px]' : '' ">
+                
+                <span v-if="parent.list.length == index+1" :class=" globalStore.highlighted == element.id ? 'text-PE_dark_white' : ''">╚═></span>
+                <span v-else  :class="globalStore.highlighted == element.id || globalStore.selected == element.id ? 'text-PE_dark_white' : ''">╠═></span>
+                <b v-if="element.type">
+                    <abbr :class="globalStore.highlighted == element.id || globalStore.selected == element.id ? 'text-PE_dark_white' : ''" class="no-underline text-PE_dark_gray" 
+                        :title="element.type.toUpperCase() + ' ID: ' + element.id">{{ element.type.toUpperCase() }}:
+                    </abbr>
+                </b>
+
+                <span v-if="element.type == 'image'" :class="globalStore.highlighted == element.id ? 'text-PE_dark_white' : ''" class="text-PE_dark_blue"> 
+                    FIPU logo 
+                </span>
+                <span v-if="element.type == 'text'">
+                    <abbr :class="globalStore.highlighted == element.id || globalStore.selected == element.id ? 'text-PE_dark_white' : ''" class="no-underline text-PE_dark_blue" 
+                        :title="element.innerHTML">{{ element.innerHTML }}
+                    </abbr>
+                </span>
                 <span v-if="element.type == 'line'">{{ element.dashed ? ' Dashed' : ' Solid' }}</span>
+
             </div> 
         </template>
     </draggable>

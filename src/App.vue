@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-slate-950 h-screen w-screen relative overflow-hidden">
+    <div class="bg-PE_dark_secondary h-screen w-screen relative overflow-hidden">
         <GlobalStoreDebug/>
         <RouterView />
     </div>

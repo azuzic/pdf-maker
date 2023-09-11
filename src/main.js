@@ -9,12 +9,12 @@ const options = {
   specs: [
     'fullscreen=no',
     'titlebar=no',
-    'scrollbars=yes'
+    'scrollbars=no'
   ],
   styles: [
-    './src/css/tailwind.css',
-    './src/css/qcss.css',
-    './src/css/katex.min.css',
+    '/css/tailwind.css',
+    '/css/qcss.css',
+    '/css/katex.min.css',
   ],
   timeout: 1000, // default timeout before the print window appears
   autoClose: true, // if false, the window will not close after printing

@@ -2,13 +2,15 @@
     <div class="flex justify-center grow overflow-hidden" @mousedown="globalStore.entered ? this.moving = null : globalStore.setSelected(null, null)">
         <div class="flex flex-col w-full relative">
             
-            <div class="w-full flex flex-col justify-center items-center z-50 bg-[#e4e4e4]">
-                <div class="flex justify-center text-4xl font-bold text-slate-900">PDF Editor:</div>
+            <div class="w-full flex flex-col justify-center items-center z-50 bg-PE_dark_primary transition-all duration-300 border-b border-PE_dark_border pb-1"
+                :class="globalStore.selected != null && globalStore.type=='text' ? 'mb-0' : 'mb-8'">
+                <div class="flex justify-center text-4xl font-bold text-PE_dark_gray pt-2">PDF Editor:</div>
                 <Slider class="w-96 my-4 slider" v-model="scale" :min="0.5" :max="2" :step="-1" showTooltip="focus" :merge="0.01" :lazy="false" />
                 <Quill_toolbar/>
             </div>
 
-            <div id="pdf-content" class="flex w-full justify-center pb-8 pt-2 relative overflow-auto scrollbar-thin scrollbar-track-slate-600 scrollbar-thumb-slate-400 hover:scrollbar-thumb-slate-500">
+            <div id="pdf-content" class="flex w-full justify-center pb-8 pt-2 relative overflow-auto scrollbar-thin 
+        scrollbar-thumb-PE_dark_scrollbar hover:scrollbar-thumb-PE_dark_scrollbar_pressed scrollbar-thumb-rounded-full">
                 <div :style="'height:'+(height*scale)+'pt; width:'+(width*scale)+'pt;'">
                     <div id="printMe" class="w-[595pt] h-[842pt]" 
                         :style="'height:'+height+'pt; width:'+width+'pt; transform: scale('+scale+'); transform-origin: top left;'">
@@ -18,7 +20,7 @@
                         <div class="bg-white h-full w-full relative text-black rounded"
                             :style="'padding: '+(globalStore.margin.Y+0.25)+'in '+(globalStore.margin.X+0.25)+'in;'">
                             <draggable @change="checkList" v-model="globalStore.PDFelements" item-key="id" group="pdfelements" v-if="globalStore.refresh" handle=".handle"
-                                class="w-full h-full leading-5 flex flex-col py-1" :class="globalStore.margin.c ? 'border-2 border-dashed rounded border-amber-600 -my-[2px]' : ''">
+                                class="w-full h-full leading-5 flex flex-col py-1" :class="globalStore.margin.c ? 'border-2 border-dashed rounded border-PE_dark_red -my-[2px]' : ''">
                                 <template #item="{ element }">
                                     <PDF_Element :item="element"/>
                                 </template>
@@ -80,6 +82,8 @@ export default {
 </style>
 <style>
 .slider {
-  --slider-bg: rgb(15,23,42);
+  --slider-bg: #f1f5f9;
+  --slider-connect-bg: #3b82f6;
+  --slider-tooltip-bg: #3b82f6;
 }
 </style>

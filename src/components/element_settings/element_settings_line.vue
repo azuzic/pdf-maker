@@ -1,7 +1,7 @@
 <template>
-    <div class="h-0.5 w-full bg-slate-400 rounded-full my-4"></div>
-    <div class="text-xl font-bold text-slate-300 mb-2">Line:</div>
-    <div class="flex flex-col gap-1 text-slate-300">
+    <div class="h-0.5 w-full bg-PE_dark_gray rounded-full my-4"></div>
+    <div class="text-xl font-bold text-PE_dark_gray mb-2">Line:</div>
+    <div class="flex flex-col gap-1 text-PE_dark_gray">
         <div class="flex gap-2">
             <LogCheckBox @selected="updateDashed" label="Dashed" :value="dashed"/>
         </div>

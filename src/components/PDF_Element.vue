@@ -1,11 +1,12 @@
 <template>
-    <div class="relative hover:outline-dotted outline-1 handle" :id="'parent_element_'+item.id" 
+    <div class="relative outline-1 handle" :id="'parent_element_'+item.id" 
         @mouseover="globalStore.entered ? '' : globalStore.highlighted = item.id; scrollToElement(item.id)"
         :class="[
             item.heightType=='Fit' ? 'flex-none':'', 
             item.heightType=='Divide' ? 'flex-1':'', 
             item.heightType=='Grow' ? 'grow':'',
-            globalStore.highlighted == item.id && globalStore.selected != item.id ? 'outline-dotted outline-1 rounded' : ''
+            globalStore.highlighted == item.id && globalStore.selected != item.id ? 'outline-dotted outline-1 rounded' : '',
+            !main ? 'hover:outline-dotted' : ''
             ]"
             :style="{
                 height: item.heightType === 'Set' ? (item.height + 'px') : '',
@@ -81,7 +82,6 @@ export default {
             return clone;
         },
         updateList(change) {
-            console.log(change);
             if (change.added) {
                 let temp = JSON.parse(JSON.stringify(change.added.element.list[0]));
                 temp.parentID = this.item.id;

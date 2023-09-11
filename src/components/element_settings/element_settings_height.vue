@@ -1,7 +1,7 @@
 <template>
-    <div class="h-0.5 w-full bg-slate-400 rounded-full my-4"></div>
-    <div class="text-xl font-bold text-slate-300 mb-2">Height:</div>
-    <div class="flex flex-col gap-1 text-slate-300">
+    <div class="h-0.5 w-full bg-PE_dark_gray rounded-full my-4"></div>
+    <div class="text-xl font-bold text-PE_dark_gray mb-2">Height:</div>
+    <div class="flex flex-col gap-1 text-PE_dark_gray">
         <div class="flex gap-2">
             <div class="font-bold">Type: </div> 
             <AP_dropdowninput :label="heightType" class="z-40" @selected="updateHeight" :list="[
@@ -13,7 +13,7 @@
         </div>
         <div v-if="heightType == 'Set'" class="flex gap-2">
             <div class="font-bold">Size: </div> 
-            <input type="text" class="bg-slate-50 bg-opacity-10 hover:bg-opacity-20 focus:bg-opacity-25 rounded px-2 w-full outline-none truncate" 
+            <input type="text" class="bg-PE_dark_gray bg-opacity-10 hover:bg-opacity-20 focus:bg-opacity-25 rounded px-2 w-full outline-none truncate" 
             v-model="height" @change="updateHeight({label: 'Set', value: 'h'})"> px
         </div>
     </div>

@@ -1,14 +1,21 @@
 <template>
     <div class="relative" @mouseup="globalStore.setSelected(item, main ? null : item.type); move = false" 
         @mouseenter="globalStore.entered = true; globalStore.highlighted = item.id; scrollToElement(item.id)" @mouseleave="globalStore.entered = false; globalStore.highlighted = ''">
-        <div v-if="main || (globalStore.moving == item.id && move)" class="flex justify-center items-center rounded-lg bg-emerald-600 hover:bg-emerald-500 hover:cursor-grab py-2 w-40">
-            <div class="text-lg font-bold text-emerald-50">LINE</div>
+        
+        <div v-if="main || (globalStore.moving == item.id && move)" 
+                class="flex items-center cursor-grab w-48 py-3 px-4 rounded bg-PE_dark_primary hover:bg-[#0e1420]
+                text-PE_dark_gray hover:text-PE_dark_white">
+            <i class="fa-solid fa-grip-lines mr-8"></i>
+            <span class="grow">Line</span>
         </div>
+
         <div class="relative py-1" :class="[globalStore.selected == item.id ? 'bg-slate-100' : 'hover:bg-slate-100',
                 globalStore.highlighted == item.id && globalStore.selected != item.id ? 'outline-dotted outline-1 rounded' : '']" v-else>
             <div :class="item.dashed ? 'border border-gray-300 border-dashed rounded-full' : 'border border-black rounded-full'"></div>
-            <i v-if="globalStore.selected == item.id" @click="deleteSelf()" 
-                class="fa-solid fa-xmark-circle text-rose-600 hover:text-rose-500 cursor-pointer text-xl absolute -top-2 -right-2 z-10"></i>
+            <div v-if="globalStore.selected == item.id"  class="cursor-pointer absolute top-1/2 -translate-y-1/2 -right-2 z-10 bg-sky-950 rounded-full h-4 w-4 flex justify-center items-center">
+                <i v-if="globalStore.selected == item.id" @click="deleteSelf()" 
+                class="fa-solid fa-xmark-circle text-rose-600 hover:text-rose-500 cursor-pointer text-xl z-10"></i>
+            </div>
             <i v-if="globalStore.selected == item.id && item.absolute" @mousedown="startDrag" @mouseup="stopDrag" @mouseleave="stopDrag" @mousemove="drag"
                 class="fa-solid fa-up-down-left-right text-green-600 hover:text-green-500 cursor-pointer text-xl absolute -top-2 -left-2 z-10"></i>
         </div>

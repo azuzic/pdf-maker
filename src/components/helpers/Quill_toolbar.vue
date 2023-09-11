@@ -4,9 +4,10 @@ import Quill_toolbar_height from '@/components/helpers/Quill_toolbar_height.vue'
 const globalStore = useGlobalStore();
 </script>
 <template>
-    <div class="relative flex justify-center items-center w-full border-t border-black">
-        <Quill_toolbar_height class="opacity-0 -z-20  pointer-events-none"/>
-        <div class="absolute w-full h-full bg-[#c8c8c8] -z-20"></div> 
+    <div class="relative flex justify-center items-center w-full transition-all duration-300" 
+        :class="globalStore.selected != null && globalStore.type=='text' ? 'h-8 opacity-100' : 'h-0 opacity-0'">
+        <Quill_toolbar_height class="opacity-0 -z-20 pointer-events-none"/>
+        <div class="absolute w-full h-full bg-PE_dark_primary -z-20"></div> 
         <div class="absolute w-full z-50" id="epictoolbar" @mouseenter="globalStore.entered = true" @mouseleave="globalStore.entered = false"
         v-if="globalStore.selected != null && globalStore.type=='text'">      
             <div class="flex">
@@ -48,30 +49,22 @@ const globalStore = useGlobalStore();
             <div class="h-6 w-0.5 rounded-full bg-gray-500"></div>
             <div class="flex">
                 <select className="ql-color" defaultValue="false">
-                    <option value="#000000">#000000</option>
-                    <option value="#06060a">#06060a</option>
-                    <option value="#13131f">#13131f</option>
-                    <option value="#0f1119">#0f1119</option>
-                    <option value="#EF5350">#EF5350</option>
-                    <option value="#16a34a">#16a34a</option>
-                    <option value="#15171e">#15171e</option>
-                    <option value="#cbd5e1">#cbd5e1</option>
-                    <option value="#e2e8f0">#e2e8f0</option>
-                    <option value="#94a3eb">#94a3eb</option>
-                    <option value="#94a3b8">#94a3b8</option>
+                    <option v-for="value in [
+                        '#000000', '#06060a', '#13131f', '#0f1119', '#15171e', '#111827', '#1f2937', 
+                        '#374151', '#475569', '#64748b', '#94a3b8', '#cbd5e1', '#cbd5e1', '#e2e8f0', 
+                        '#f1f5f9', '#94a3eb', '#3b82f6', '#2563eb', '#1d4ed8', '#16a34a', '#10b981',                         
+                        '#ef4444', '#eab308'
+                    ]" 
+                    :value="value">{{value}}</option>
                 </select>
                 <select className="ql-background" defaultValue="false">
-                    <option value="#00000000">#00000000</option>
-                    <option value="#06060a">#06060a</option>
-                    <option value="#13131f">#13131f</option>
-                    <option value="#0f1119">#0f1119</option>
-                    <option value="#EF5350">#EF5350</option>
-                    <option value="#16a34a">#16a34a</option>
-                    <option value="#15171e">#15171e</option>
-                    <option value="#cbd5e1">#cbd5e1</option>
-                    <option value="#e2e8f0">#e2e8f0</option>
-                    <option value="#94a3eb">#94a3eb</option>
-                    <option value="#94a3b8">#94a3b8</option>
+                    <option v-for="value in [
+                        '#000000', '#06060a', '#13131f', '#0f1119', '#15171e', '#111827', '#1f2937', 
+                        '#374151', '#475569', '#64748b', '#94a3b8', '#cbd5e1', '#cbd5e1', '#e2e8f0', 
+                        '#f1f5f9', '#94a3eb', '#3b82f6', '#2563eb', '#1d4ed8', '#16a34a', '#10b981',                         
+                        '#ef4444', '#eab308'
+                    ]" 
+                    :value="value">{{value}}</option>
                 </select>
             </div>
             <div class="h-6 w-0.5 rounded-full bg-gray-500"></div>
@@ -84,7 +77,7 @@ const globalStore = useGlobalStore();
     </div>
 </template>
 
-<script>
+<script> 
 export default {
     name: "Quill_toolbar",
 }
@@ -92,15 +85,15 @@ export default {
 
 <style lang="scss">
 .dp__menu, .dp__overlay_container {
-    background-color: rgba(6, 6, 10) !important;
+    background-color: #111827 !important;
     border: 1px solid rgb(75, 85, 99) !important;
     .dp__arrow_top, .dp__arrow_bottom {
-        background-color: #EF5350 !important;
+        background-color: #3b82f6 !important;
         border: 1px solid rgb(75, 85, 99) !important;
     }
     .dp__active_date, .dp__overlay_cell_active {
-        background-color: #EF5350 !important;
-        color: rgba(6, 6, 10) !important;
+        background-color: #3b82f6 !important;
+        color: #111827 !important;
     }
     .dp__cell_inner, .dp__month_year_select, .dp__overlay_cell {
         &:hover {
@@ -109,9 +102,9 @@ export default {
     }
 }
 .dp__overlay_action {
-    background-color: rgba(6, 6, 10) !important;
+    background-color: #111827 !important;
     border: 1px solid rgb(75, 85, 99) !important;
-    color: #EF5350 !important;
+    color: #3b82f6 !important;
     &:hover {
         text-decoration: underline;
     }   
@@ -130,19 +123,22 @@ export default {
     border: none !important;
 }
 .ql-toolbar {
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    position: fixed;
     display: flex;
-    flex-wrap: wrap;
     justify-content: center !important;
     align-items: center !important;
     z-index: 32;
-    background-color: #c8c8c8;
-    border-radius: 4px;
-    padding: 4px 8px !important;
+    width: 100%;
+    justify-content: space-left;
+    background-color: #111827;
+    border-left: 0px !important;
+    border-right: 0px !important;
+    border-top: 0px !important;
 
     .ql-picker-options {
-        padding: 0px !important;
-        margin: 0px !important;
-        background-color: rgb(200, 200, 200) !important;
+        background-color: #111827 !important;
         border: 1px solid !important;
         border-radius: 4px;
         z-index: 300;
@@ -162,25 +158,16 @@ export default {
         border-radius: 4px;
         border: none !important;
         transition: all 0.2s !important;
-        color: black !important;
-        svg {filter: brightness(50%);}
-        .ql-stroke {filter: brightness(50%);}
+        svg {filter: brightness(150%);}
 
         &:hover {
-            background-color: white !important;
+            background-color: #3b82f6 !important;
             font-weight: bold !important;
             svg {filter: brightness(0%);}
         }
     }
     .ql-picker-option, .ql-picker-item {
-        display: flex !important;
-        justify-content: center !important;
-        justify-items: center !important;
-        padding: 2px !important;
-        border-radius: 4px !important;
-        svg {            
-            filter: brightness(100%) !important ;
-        }
+        svg {filter: brightness(100%) !important ;}
     }
 }
 
@@ -199,10 +186,8 @@ export default {
 .ql-picker-item {
     transition: all 0.1s !important;
     border: 1px solid rgb(75, 85, 99) !important;
-    font-weight: normal;
     &:hover {
-        transform: scale(110%);
-        font-weight: normal;
+        transform: scale(120%);
     }
 }
 
@@ -220,7 +205,7 @@ export default {
         content: none !important;
     }
     .ql-action, .ql-remove {
-        color: #EF5350;
+        color: #3b82f6;
         &:hover {
             text-decoration: underline !important;
         }
@@ -240,7 +225,7 @@ export default {
             border: 1px solid #cbd5e1 !important;
         }
         &:focus {
-            border: 1px solid white !important;
+            border: 1px solid #3b82f6 !important;
         }
     }
 }
