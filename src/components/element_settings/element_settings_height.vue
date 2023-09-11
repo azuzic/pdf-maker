@@ -1,6 +1,6 @@
 <template>
     <div class="h-0.5 w-full bg-PE_dark_gray rounded-full my-4"></div>
-    <div class="text-xl font-bold text-PE_dark_gray mb-2">Height:</div>
+    <div class="text-xl font-bold text-PE_dark_gray mb-2">Parent Height:</div>
     <div class="flex flex-col gap-1 text-PE_dark_gray">
         <div class="flex gap-2">
             <div class="font-bold">Type: </div> 
