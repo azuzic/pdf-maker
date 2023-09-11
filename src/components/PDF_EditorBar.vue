@@ -28,9 +28,9 @@
                 <Slider @start="globalStore.margin.c = true" @end="globalStore.margin.c = false"
                     class="w-full mb-1.5 slider" v-model="globalStore.margin.X" :min="0" :max="1" :step="-1" showTooltip="focus" :merge="0.01" :lazy="false" />
             </div>
-            <div class="inline-flex items-center text-left whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border
+            <div class="relative inline-flex items-center text-left whitespace-nowrap focus:outline-none transition-colors focus:ring duration-150 border
                 cursor-pointer rounded border-blue-500 ring-blue-700 text-blue-500 hover:bg-blue-600 hover:text-white hover:border-blue-600 py-2 px-3">
-                <input type="file" ref="fileInput" class="absolute cursor-pointer left-0 top-0 px-4 pt-1.5 pb-1 w-full opacity-0 rounded-md text-white" 
+                <input type="file" ref="fileInput" class="absolute opacity-0 z-50 cursor-pointer left-0 top-0 px-4 pt-1.5 pb-1 w-full  rounded-md text-white" 
                 @change="loadTemplate"/>
                 <i class="fa-solid fa-file-import w-8"></i>
                 <span class="grow">Load Template</span>
