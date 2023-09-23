@@ -9,13 +9,17 @@
             <span class="grow">Line</span>
         </div>
 
-        <div class="relative py-1" :class="[globalStore.selected == item.id ? 'bg-slate-100' : 'hover:bg-slate-100',
+        <div class="relative py-1" :class="[globalStore.selected == item.id ? 'outline-dotted outline-1 rounded bg-slate-100' : 'hover:bg-slate-100',
                 globalStore.highlighted == item.id && globalStore.selected != item.id ? 'outline-dotted outline-1 rounded' : '']" v-else>
             <div :class="item.dashed ? 'border border-gray-300 border-dashed rounded-full' : 'border border-black rounded-full'"></div>
-            <div v-if="globalStore.selected == item.id"  class="cursor-pointer absolute top-1/2 -translate-y-1/2 -right-2 z-10 bg-sky-950 rounded-full h-4 w-4 flex justify-center items-center">
+            <div v-if="globalStore.selected == item.id"  class="cursor-pointer absolute -top-4 -right-1 z-10 bg-sky-950 rounded-full h-4 w-4 flex justify-center items-center">
                 <i v-if="globalStore.selected == item.id" @click="deleteSelf()" 
                 class="fa-solid fa-xmark-circle text-rose-600 hover:text-rose-500 cursor-pointer text-xl z-10"></i>
             </div>
+            <i v-if="globalStore.selected == item.id" @mousedown="cloneItem()"
+                class="fa-solid fa-clone text-sky-400 hover:text-sky-300 cursor-pointer text-xs absolute bg-PE_dark_primary p-1 rounded-full
+                    -bottom-5 -right-1.5 z-10 handle">
+            </i>
             <i v-if="globalStore.selected == item.id && item.absolute" @mousedown="startDrag" @mouseup="stopDrag" @mouseleave="stopDrag" @mousemove="drag"
                 class="fa-solid fa-up-down-left-right text-green-600 hover:text-green-500 cursor-pointer text-xl absolute -top-2 -left-2 z-10"></i>
         </div>
@@ -34,6 +38,7 @@ export default {
     name: "PDF_line",
     props: {
         item: Object,
+        index: Number,
         main: false,
         list: Array,
     },
@@ -61,6 +66,9 @@ export default {
     methods: {
         deleteSelf() {
             this.$emit('deleteItem', this.item.id);
+        },
+        cloneItem() {
+            this.$emit('cloneInnerItem', this.item, this.index);
         },
         startDrag(event) {
             this.el = document.getElementById('element_'+this.item.id);

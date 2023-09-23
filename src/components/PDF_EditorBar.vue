@@ -1,11 +1,29 @@
 <template>
-    <div class="w-64 min-w-[256px] bg-PE_dark_primary border-r border-PE_dark_border drop-shadow-lg z-[200] h-full flex flex-col justify-center items-center px-8">
+    <div class="w-64 min-w-[256px] bg-PE_dark_primary border-r border-PE_dark_border drop-shadow-lg z-[200] h-full flex flex-col justify-center items-center px-8 transition-all duration-300"
+        :class="globalStore.variablePreview ? 'brightness-50 opacity-50 pointer-events-none' : 'brightness-100'">
 
-        <Prompt :showPrompt="showHTMLPrompt" title="Download PDF" variable="Filename" placeholder="Name" @submitPrompt="saveHTML" />
+        <Prompt :showPrompt="showHTMLPrompt" title="Download HTML" variable="Filename" placeholder="Name" @submitPrompt="saveHTML" />
         <Prompt :showPrompt="showTemplatePrompt" title="Download Template" variable="Template name" placeholder="Name" @submitPrompt="saveTemplate" />
         <Prompt :showPrompt="globalStore.showImagePrompt" title="Change Image URL" variable="Image URL" placeholder="Url" @submitPrompt="globalStore.changeURL" />
 
-        <span class="w-full text-left text-PE_dark_gray font-bold pt-12 pb-2">Items:</span>
+        <div class="flex w-full gap-2 mb-4 mt-2" :class="globalStore.selected != null ? 'brightness-50 cursor-not-allowed' : 'brightness-100'">
+            <button class="inline-flex items-center text-left whitespace-nowrap focus:outline-none transition-all focus:ring duration-150 border
+                cursor-pointer rounded border-blue-500 ring-blue-700 text-blue-500 hover:bg-blue-600 hover:text-white hover:border-blue-600 py-2 px-3
+                disabled:opacity-25 opacity-100 disabled:pointer-events-none" :disabled="globalStore.undoStack.length == 0" @click="globalStore.undo()"
+                :class="globalStore.selected != null ? 'pointer-events-none' : ''">
+                <i class="fa-solid fa-rotate-left w-8"></i>
+                <span class="grow">Undo</span>
+            </button>
+            <button class="inline-flex items-center text-left whitespace-nowrap focus:outline-none transition-all focus:ring duration-150 border
+                cursor-pointer rounded border-blue-500 ring-blue-700 text-blue-500 hover:bg-blue-600 hover:text-white hover:border-blue-600 py-2 px-3
+                disabled:opacity-25 opacity-100 disabled:pointer-events-none" :disabled="globalStore.redoStack.length == 0" @click="globalStore.redo()"
+                :class="globalStore.selected != null ? 'pointer-events-none' : ''">
+                <i class="fa-solid fa-rotate-right w-8"></i>
+                <span class="grow">Redo</span>
+            </button>
+        </div>
+
+        <span class="w-full text-left text-PE_dark_gray font-bold pb-2">Items:</span>
         <draggable class="flex flex-col items-center border border-PE_dark_border rounded mb-2" 
             @mousedown="globalStore.setSelected(null, null)"
             :list="globalStore.PredefinedPDFelements" v-if="globalStore.refresh" item-key="id"  
@@ -102,18 +120,28 @@ export default {
             await this.$htmlToPaper('printMe');
         },
         async loadTemplate(event) {
+            this.globalStore.PDFelements = null;
+            this.globalStore.update();
             const file = event.target.files[0];
             if (file) {
                 const text = await file.text();
-                this.globalStore.PDFelements = JSON.parse(text);
+                let elements_and_variables = JSON.parse(text);
+                this.globalStore.PDFelements = elements_and_variables.elements;
+                this.globalStore.variables = elements_and_variables.variables;
             }
+            this.globalStore.update();
         },
         async saveTemplate(fileName, bool) {
             this.showTemplatePrompt = false;
             if (!bool) return;
-            const variableContent = JSON.stringify(this.globalStore.PDFelements);
 
-            const blob = new Blob([variableContent], { type: 'text/plain' });
+            let elements_and_variables = {
+                elements: this.globalStore.PDFelements,
+                variables: this.globalStore.variables,
+            }
+            const content = JSON.stringify(elements_and_variables);
+
+            const blob = new Blob([content], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
 
             const a = document.createElement('a');

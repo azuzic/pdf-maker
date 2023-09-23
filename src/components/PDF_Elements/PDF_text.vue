@@ -1,5 +1,5 @@
 <template>
-    <div class="relative" @mouseup="globalStore.setSelected(item, main ? null : item.type); move = false"
+    <div class="relative" @mouseup="globalStore.setSelected(item, main ? null : item.type); move = false;"
         @mouseenter="globalStore.entered = true; globalStore.highlighted = item.id; scrollToElement(item.id)" @mouseleave="globalStore.entered = false; globalStore.highlighted = ''">
         
         <div v-if="main || (globalStore.moving == item.id && move)" 
@@ -16,10 +16,14 @@
                 :class="globalStore.selected == item.id ? 'h-full -my-1 px-2 bg-gray-400 bg-opacity-25 rounded' : 'h-0 p-0 m-0 bg-opacity-0'">
                 <QuillEditor v-if="globalStore.selected == item.id" v-model:content="innerHTML" contentType="html" theme="snow" toolbar="#epictoolbar"/>
             </div>
-            <div v-if="globalStore.selected == item.id"  class="cursor-pointer absolute -top-2 -right-2 z-10 bg-sky-950 rounded-full h-4 w-4 flex justify-center items-center">
-                <i v-if="globalStore.selected == item.id" @click="deleteSelf()" 
+            <div v-if="globalStore.selected == item.id"  class="cursor-pointer absolute -top-2 -right-1 z-10 bg-sky-950 rounded-full h-4 w-4 flex justify-center items-center">
+                <i v-if="globalStore.selected == item.id" @mouseup="deleteSelf()" 
                 class="fa-solid fa-xmark-circle text-rose-600 hover:text-rose-500 cursor-pointer text-xl z-10"></i>
             </div>
+            <i v-if="globalStore.selected == item.id" @mousedown="cloneItem()"
+                class="fa-solid fa-clone text-sky-400 hover:text-sky-300 cursor-pointer text-xs absolute bg-PE_dark_primary p-1 rounded-full
+                    -bottom-3 -right-1.5 z-10 handle">
+            </i>
             <i v-if="globalStore.selected == item.id && item.absolute" @mousedown="startDrag" @mouseup="stopDrag" @mouseleave="stopDrag" @mousemove="drag"
                 class="fa-solid fa-up-down-left-right text-green-600 hover:text-green-500 cursor-pointer text-xl absolute -top-2 -left-2 z-10"></i>
         </div>
@@ -40,6 +44,7 @@ export default {
     name: "PDF_text",
     props: {
         item: Object,
+        index: Number,
         main: false,
         list: Array,
     },
@@ -69,6 +74,9 @@ export default {
     methods: {
         deleteSelf() {
             this.$emit('deleteItem', this.item.id);
+        },
+        cloneItem() {
+            this.$emit('cloneInnerItem', this.item, this.index);
         },
         startDrag(event) {
             this.el = document.getElementById('element_'+this.item.id);

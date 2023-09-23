@@ -17,7 +17,10 @@
                 <i v-if="globalStore.selected == item.id" @click="deleteSelf()" 
                 class="fa-solid fa-xmark-circle text-rose-600 hover:text-rose-500 cursor-pointer text-xl z-10"></i>
             </div>
-            
+            <i v-if="globalStore.selected == item.id" @mousedown="cloneItem()"
+                class="fa-solid fa-clone text-sky-400 hover:text-sky-300 cursor-pointer text-sm absolute bg-PE_dark_primary p-1 rounded-full
+                    -bottom-2 -right-2 z-10 handle">
+            </i>            
             <i v-if="globalStore.selected == item.id && item.absolute" @mousedown="startDrag" @mouseup="stopDrag" @mouseleave="stopDrag" @mousemove="drag"
                 class="fa-solid fa-up-down-left-right text-green-600 hover:text-green-500 cursor-pointer text-xl absolute -top-2 -left-2 z-10"></i>
 
@@ -41,6 +44,7 @@ export default {
     name: "PDF_image",
     props: {
         item: Object,
+        index: Number,
         main: false,
         list: Array,
     },
@@ -68,6 +72,9 @@ export default {
     methods: {
         deleteSelf() {
             this.$emit('deleteItem', this.item.id);
+        },
+        cloneItem() {
+            this.$emit('cloneInnerItem', this.item, this.index);
         },
         startDrag(event) {
             this.el = document.getElementById('element_' + this.item.id);

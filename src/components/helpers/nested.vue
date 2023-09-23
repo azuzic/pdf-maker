@@ -5,9 +5,9 @@
             <template #item="{ element }">
                 <div class="text-left truncate overflow-hidden rounded bg-PE_dark_primary my-0.5">
                     <div class="truncate text-sm text-PE_dark_gray border-t border-l border-r rounded-t transition-all" :id="'child_'+element.id"
-                        :class=" globalStore.highlighted == element.id ? 'bg-PE_dark_accent_pressed border-PE_dark_accent_pressed' : 'border-PE_dark_blue'"
+                        :class=" globalStore.highlighted == element.id && globalStore.selected == null ? 'bg-PE_dark_accent_pressed border-PE_dark_accent_pressed' : 'border-PE_dark_blue'"
                         @mouseenter="globalStore.entered = true, globalStore.highlighted = element.id, scrollToElement(element.id)" @mouseleave="globalStore.entered = false, globalStore.highlighted = ''">
-                        ╓ <abbr :class=" globalStore.highlighted == element.id ? 'text-PE_dark_white' : ''"
+                        ╓ <abbr :class=" globalStore.highlighted == element.id && globalStore.selected == null ? 'text-PE_dark_white' : ''"
                         class="no-underline font-bold text-PE_dark_blue" :title="'PARENT ID: ' + element.id"> PARENT </abbr>
                     </div>
                     <Nested2 :list="list" :parent="element"/>

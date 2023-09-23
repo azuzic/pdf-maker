@@ -9,6 +9,19 @@ let wait = function (seconds) {
 
 export const useGlobalStore = defineStore("globalStore", {
     state: () => ({
+        //UNDO REDO
+        undoStack: [],
+        redoStack: [],
+        stackBuffer: [],
+        canAddToStack: true,
+
+        //VARIABLE PREVIEW
+        variablePreview: false,
+        variables: {},
+        innerHTML: [],
+        calculatedInnerHTML: "",
+
+        //HELPING VARIABLES
         refresh: true,
         selected: null,
         highlighted: null,
@@ -18,14 +31,46 @@ export const useGlobalStore = defineStore("globalStore", {
         showImagePrompt: false,
         imageUrl: null,
 
+        //MARGIN
         margin: {c:false,X:0.5, Y:0.5},
 
+        //PDF ELEMENTS
         PredefinedPDFelements: [],
         PDFelements: [],
 
         selectedItem: null
     }),
     actions: {
+        async undo() {
+            this.canAddToStack = false;
+            let element = JSON.stringify(this.undoStack.pop());
+
+            if (JSON.stringify(this.stackBuffer) != JSON.stringify(this.redoStack[this.redoStack.length-1]))
+                this.redoStack.push(JSON.parse(JSON.stringify(this.stackBuffer)));
+            this.stackBuffer = JSON.parse(element);
+
+            await this.executeNextTickMultipleTimes(5);
+            this.PDFelements = [];
+            await this.executeNextTickMultipleTimes(5);
+            this.PDFelements = JSON.parse(element);
+            await this.executeNextTickMultipleTimes(5);
+            this.canAddToStack = true;
+        },
+        async redo() {
+            this.canAddToStack = false;
+            let element = JSON.stringify(this.redoStack.pop());
+
+            if (JSON.stringify(this.stackBuffer) != JSON.stringify(this.undoStack[this.undoStack.length-1]))
+                this.undoStack.push(JSON.parse(JSON.stringify(this.stackBuffer)));
+            this.stackBuffer = JSON.parse(element);
+
+            await this.executeNextTickMultipleTimes(5);
+            this.PDFelements = [];
+            await this.executeNextTickMultipleTimes(5);
+            this.PDFelements = JSON.parse(element);
+            await this.executeNextTickMultipleTimes(5);
+            this.canAddToStack = true;
+        },
         async resetPredefinedPDFelements() {
             await this.update();
             this.PredefinedPDFelements = [
@@ -130,6 +175,7 @@ export const useGlobalStore = defineStore("globalStore", {
             this.moving = null;
             this.selectedItem = item;
             if (item == null) {
+                this.highlighted = null;
                 this.selectedItem = null;
                 this.type = null;
                 this.selected = null;
