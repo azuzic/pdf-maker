@@ -5,18 +5,21 @@
             <div class="w-full flex flex-col justify-center items-center z-50 bg-PE_dark_primary transition-all duration-300 border-b border-PE_dark_border pb-1"
                 :class="globalStore.selected != null && globalStore.type=='text' ? 'mb-0' : 'mb-8'">
                 <div class="flex items-baseline gap-1">
-                    <div class="flex justify-center text-4xl font-bold text-PE_dark_gray pt-2">PDF Editor</div>
+                    <div class="flex justify-center text-4xl font-bold text-PE_dark_gray pt-2">PDF Template Maker</div>
                     <abbr class="no-underline font-bold text-PE_dark_gray cursor-help" :title="
 ` 
 > fixed: 
-    - mouse hover
-    - template loading 
+    - undoing/redoing into weird states
+    - selecting items
+    - dropdown z-fighting in element settings, visual tweak
+    - number inputs are now actual number inputs
 > added:
-    - item cloning
-    - variable preview
-    - undo/redo
+    - image variables
+    - more image options: size, position, repeat
+    - element height
+    - custom increment/decrement buttons to number inputs
 `"> 
-                        v1.1 
+                        v1.2 
                     </abbr>
                 </div>
                 <Slider class="w-96 my-4 slider" v-model="scale" :min="0.5" :max="2" :step="-1" showTooltip="focus" :merge="0.01" :lazy="false" />
@@ -33,7 +36,7 @@
                 :class="globalStore.selected == null ? 'pt-0' : 'pt-2'">
                 <div :style="'height:'+(height*scale)+'pt; width:'+(width*scale)+'pt;'">
 
-                    <div v-if="!globalStore.variablePreview" id="printMe" class="w-[595pt] h-[842pt]" 
+                    <div v-if="!variablePreview" id="printMe" class="w-[595pt] h-[842pt]" 
                         :style="'height:'+height+'pt; width:'+width+'pt; transform: scale('+scale+'); transform-origin: top left;'">
                         <Vertical_arrow v-if="globalStore.margin.c"/>
                         <Horizontal_arrow v-if="globalStore.margin.c"/>
@@ -77,6 +80,7 @@ export default {
             height: 842,
             width: 595,
             scale: 1,
+            variablePreview: false,
         }
     },
     setup() {
@@ -102,7 +106,7 @@ export default {
             const innerHTML = globalStore.innerHTML;
             const updatedHTML = innerHTML.map(item => {
             if (item.startsWith('$')) {
-                return variables[item] || item; 
+                return variables[item].value || item; 
             }
             return item;
             });
@@ -139,23 +143,48 @@ export default {
     methods: {
         async updateVariablePreview(value) {
             this.globalStore.variablePreview = value;
+            await this.globalStore.wait();
+            this.variablePreview = value;
             if (value) {
                 const divContent = document.getElementById("printMe").innerHTML;
                 await this.globalStore.executeNextTickMultipleTimes(5);
 
                 let variables = {};
+                
+                let parts = divContent.split(/\;\$(\w+)/);
+                for (let i = 0; i < parts.length; i++) {
+                    if (i % 2 != 0) { 
+                        let variableName = `$${parts[i]}`;
+                        if (this.globalStore.variables.hasOwnProperty(variableName))
+                            variables[variableName] = {
+                                type: this.globalStore.variables[variableName].type,
+                                value: this.globalStore.variables[variableName].value,
+                            }
+                        else variables[variableName] = {
+                            type: "image",
+                            value: "https://wiki.dave.eu/images/4/47/Placeholder.png",
+                        }
+                    }
+                }
+
                 let sentence = [];
-
-                let parts = divContent.split(/\$(\w+)/);
-
+                parts = divContent.split(/\$(\w+)/);
+                this.globalStore.variables = variables;
                 for (let i = 0; i < parts.length; i++) {
                     if (i % 2 === 0) {
                         sentence.push(parts[i]);
                     } else {
                         let variableName = `$${parts[i]}`;
                         if (this.globalStore.variables.hasOwnProperty(variableName))
-                            variables[variableName] = this.globalStore.variables[variableName];
-                        else variables[variableName] = "placeholder"
+                            variables[variableName] = {
+                                type: this.globalStore.variables[variableName].type,
+                                value: this.globalStore.variables[variableName].value,
+                            }
+                        else if (!variables.hasOwnProperty(variableName)) 
+                            variables[variableName] = {
+                                type: "text",
+                                value: "placeholder",
+                            }
                         sentence.push(variableName);
                     }
                 }

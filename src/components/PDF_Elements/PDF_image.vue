@@ -1,7 +1,6 @@
 <template>
-    <div class="relative" @mouseup="globalStore.setSelected(item, main ? null : item.type); move = false" 
+    <div class="relative w-full h-full" @mouseup="globalStore.setSelected(item, main ? null : item.type); move = false" 
         @mouseenter="globalStore.entered = true; globalStore.highlighted = item.id; scrollToElement(item.id)" @mouseleave="globalStore.entered = false; globalStore.highlighted = ''">
-        
         
         <div v-if="main || (globalStore.moving == item.id && move)" 
                 class="flex items-center cursor-grab w-48 py-3 px-4 rounded bg-PE_dark_primary hover:bg-[#0e1420]
@@ -10,8 +9,12 @@
             <span class="grow">Image</span>
         </div>
 
-        <div class="relative mb-2" :class="globalStore.highlighted == item.id && globalStore.selected != item.id ? 'outline-dotted outline-1' : ''" v-else>
-            <img :class="globalStore.selected == item.id ? 'outline rounded outline-1' : 'hover:outline-dotted outline-1'" :src="item.url" alt="">
+        <div class="relative mb-2 h-full w-full" :class="globalStore.highlighted == item.id && globalStore.selected != item.id ? 'outline-dotted outline-1' : ''" v-else>
+            <div :class="[globalStore.selected == item.id ? 'outline rounded outline-1' : 'hover:outline-dotted outline-1', 'bg-'+item.size]" class="h-full w-full"
+                :style="'background-image: url('+(item.url.startsWith('$') && !globalStore.variablePreview ? 'https://wiki.dave.eu/images/4/47/Placeholder.png' : item.url) +
+                '); background-position: ' + item.position + 
+                '; background-repeat: ' + item.repeat + ''">
+            </div>
             
             <div v-if="globalStore.selected == item.id"  class="cursor-pointer absolute -top-2 -right-2 z-10 bg-sky-950 rounded-full h-4 w-4 flex justify-center items-center">
                 <i v-if="globalStore.selected == item.id" @click="deleteSelf()" 
@@ -40,6 +43,7 @@
 
 <script>
 import { useGlobalStore } from '@/stores/globalStore'
+
 export default {
     name: "PDF_image",
     props: {

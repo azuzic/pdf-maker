@@ -8,7 +8,6 @@ let Service = axios.create({
 let PDF = {
     async getPDF(data) {
         try {
-            console.log(data);
             return Service.post("pdf/generate-pdf", data);
         } catch (error) {
             let detailedError = {

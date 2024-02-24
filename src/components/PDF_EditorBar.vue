@@ -5,7 +5,7 @@
         <Prompt :showPrompt="showHTMLPrompt" title="Download HTML" variable="Filename" placeholder="Name" @submitPrompt="saveHTML" />
         <Prompt :showPrompt="showTemplatePrompt" title="Download Template" variable="Template name" placeholder="Name" @submitPrompt="saveTemplate" />
         <Prompt :showPrompt="globalStore.showImagePrompt" title="Change Image URL" variable="Image URL" placeholder="Url" @submitPrompt="globalStore.changeURL" />
-
+        
         <div class="flex w-full gap-2 mb-4 mt-2" :class="globalStore.selected != null ? 'brightness-50 cursor-not-allowed' : 'brightness-100'">
             <button class="inline-flex items-center text-left whitespace-nowrap focus:outline-none transition-all focus:ring duration-150 border
                 cursor-pointer rounded border-blue-500 ring-blue-700 text-blue-500 hover:bg-blue-600 hover:text-white hover:border-blue-600 py-2 px-3
@@ -170,7 +170,6 @@ export default {
             await this.globalStore.resetPredefinedPDFelements();
         },
         checkList(change) {
-            console.log(change);
             if (change.added) {
                 let temp = JSON.parse(JSON.stringify(change.added.element)); 
                 temp.list[0].parentID = temp.id;

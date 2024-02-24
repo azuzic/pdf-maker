@@ -12,9 +12,9 @@
                 class="w-full mt-2 | bg-PE_dark_gray bg-opacity-5 | drop-shadow-md rounded | overflow-hidden | transition-opacity duration-300 | absolute overflow-y-auto">
                 <ul class="text-sm z-50" aria-labelledby="dropdownDefaultButton">
                     <div v-for="v, id in  list " @click="value = v; show = false; $emit('selected', v)" 
-                        class="block px-4 py-1 bg-PE_dark_secondary hover:bg-opacity-100 bg-opacity-95 cursor-default hover:font-bold z-50"
-                        :class="v.value == value.value ? 'bg-AP_AccentFont text-PE_dark_blue font-bold' : 'text-PE_dark_gray'"> 
-                        {{ v.label }} 
+                        class="block px-4 py-1 hover:bg-opacity-100 bg-opacity-95 cursor-default hover:font-bold z-50"
+                        :class="v.label == value.label ? 'bg-PE_dark_gray text-PE_dark_secondary font-bold' : 'text-PE_dark_gray bg-PE_dark_secondary '"> 
+                        {{ v.label }}
                     </div>   
                 </ul>
             </div>

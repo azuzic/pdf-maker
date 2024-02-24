@@ -1,10 +1,10 @@
-<template>
+<template> 
     <div class="h-0.5 w-full bg-PE_dark_gray rounded-full my-4"></div>
-    <div class="text-xl font-bold text-PE_dark_gray mb-2">Width:</div>
+    <div class="text-xl font-bold text-PE_dark_gray mb-2">Element Width:</div>
     <div class="flex flex-col gap-1 text-PE_dark_gray">
         <div class="flex gap-2">
             <div class="font-bold">Type: </div> 
-            <AP_dropdowninput :label="widthType" class="z-50" @selected="updateWidth" :list="[
+            <AP_dropdowninput :label="widthType" class="z-[60]" @selected="updateWidth" :list="[
                 {label: 'Fit', value: 'flex-none'},
                 {label: 'Divide', value: 'flex-1'},
                 {label: 'Grow', value: 'grow'},
@@ -13,8 +13,13 @@
         </div>
         <div v-if="widthType == 'Set'" class="flex gap-2">
             <div class="font-bold">Size: </div> 
-            <input type="text" class="bg-PE_dark_gray bg-opacity-10 hover:bg-opacity-20 focus:bg-opacity-25 rounded px-2 w-full outline-none truncate" 
-            v-model="width" @change="updateWidth({label: 'Set', value: 'w'})"> px
+            <input type="number" class="bg-PE_dark_gray bg-opacity-10 hover:bg-opacity-20 focus:bg-opacity-25 rounded px-2 w-full outline-none truncate" 
+            v-model="width" @change="updateWidth({label: 'Set', value: 'w'})">
+            <div class="flex flex-col h-6">                
+                <i class="fa-solid fa-square-caret-up text-xs hover:brightness-150" @click="width+=1; updateWidth({label: 'Set', value: 'w'});"></i>
+                <i class="fa-solid fa-square-caret-down text-xs hover:brightness-150" @click="width-=1; updateWidth({label: 'Set', value: 'w'});"></i>
+            </div>
+            px
         </div>
     </div>
 </template>

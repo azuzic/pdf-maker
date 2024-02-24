@@ -33,7 +33,7 @@ export default {
     async mounted() {
         await this.globalStore.executeNextTickMultipleTimes(5);
         this.index = this.globalStore.PDFelements.findIndex(item => item.id === this.globalStore.selectedItem.parentID);
-        this.justifyType = this.globalStore.PDFelements[this.index].justify;
+        if (this.index != -1) this.justifyType = this.globalStore.PDFelements[this.index].justify;
     },
     methods: {
         updateJustify(value) {

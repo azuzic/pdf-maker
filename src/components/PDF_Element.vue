@@ -11,7 +11,7 @@
             :style="{
                 height: item.heightType === 'Set' ? (item.height + 'px') : '',
             }">
-        <draggable v-if="!main" class="flex w-full" :id="'element_'+item.id" handle=".handle" 
+        <draggable v-if="!main" class="flex w-full h-full" :id="'element_'+item.id" handle=".handle" 
             :class="[
                 item.justify=='Start' ? 'justify-start':'', 
                 item.justify=='Center' ? 'justify-center':'', 
@@ -27,7 +27,8 @@
                 <div :id="'element_'+element.id" class="my-[3px]"
                     :class="[element.type=='text' ? element.widthClasses : '', element.absolute ? ' absolute z-20' : 'relative']" 
                     :style="{
-                        width: element.widthClasses === 'w' ? (element.width + 'px') : (element.type=='line' ? '100%' : 'auto') ,
+                        width: element.widthClasses === 'w' ? (element.width + 'px') : (element.type=='line' ? '100%' : (element.type=='image' ? '100%' : 'auto')),
+                        height: element.heightClasses === 'h' ? (element.height + 'px') : 'auto',
                         left: element.absolute ? (element.left + 'px') : 'auto',
                         top: element.absolute ? (element.top + 'px') : 'auto'
                     }">
@@ -60,6 +61,12 @@ import PDF_line from '@/components/PDF_Elements/PDF_line.vue';
 import cryptoRandomString from 'crypto-random-string';
 import draggable from 'vuedraggable'
 
+let wait = function (seconds = 0) {
+    return new Promise((resolveFn) => {
+        setTimeout(resolveFn, seconds * 1000);
+    });
+};
+
 export default {
     name: "PDF_Element",
     components: { PDF_image, PDF_text, PDF_line, draggable },
@@ -73,15 +80,18 @@ export default {
         return { globalStore };
     },
     methods: {
-        deleteSelf() {
+        async deleteSelf() {
             this.globalStore.PDFelements = this.globalStore.PDFelements.filter(item => item.id !== this.item.id);
-        },
-        deleteItem(id) {
-            this.globalStore.entered = false;
+            await wait();
             this.globalStore.selected = null;
+        },
+        async deleteItem(id) {
+            this.globalStore.entered = false;
             this.globalStore.type==null;
             this.item.list = this.item.list.filter(item => item.id !== id);
             if (this.item.list.length == 0) this.globalStore.PDFelements = this.globalStore.PDFelements.filter(item => item.id !== this.item.id);
+            await wait();
+            this.globalStore.selected = null;
         },
         cloneInnerItem(item, index) {
             let clone = JSON.parse(JSON.stringify(item));

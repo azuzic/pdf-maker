@@ -54,7 +54,14 @@ export const useGlobalStore = defineStore("globalStore", {
             await this.executeNextTickMultipleTimes(5);
             this.PDFelements = JSON.parse(element);
             await this.executeNextTickMultipleTimes(5);
-            this.canAddToStack = true;
+            this.canAddToStack = true; 
+
+            let repeatUndo = false;
+            for (let PDFelement of this.PDFelements) {
+                if (PDFelement.list.length == 0) repeatUndo = true;
+                else for (let e of PDFelement.list) if (e.list != undefined) repeatUndo = true;
+            }
+            if (repeatUndo) await this.undo();
         },
         async redo() {
             this.canAddToStack = false;
@@ -70,6 +77,13 @@ export const useGlobalStore = defineStore("globalStore", {
             this.PDFelements = JSON.parse(element);
             await this.executeNextTickMultipleTimes(5);
             this.canAddToStack = true;
+
+            let repeatRedo = false;
+            for (let PDFelement of this.PDFelements) {
+                if (PDFelement.list.length == 0) repeatRedo = true;
+                else for (let e of PDFelement.list) if (e.list != undefined) repeatRedo = true;
+            }
+            if (repeatRedo) await this.redo();
         },
         async resetPredefinedPDFelements() {
             await this.update();
@@ -79,7 +93,7 @@ export const useGlobalStore = defineStore("globalStore", {
                     justify: "Start",
 
                     heightType: "Fit",
-                    height: "100",
+                    height: 100,
 
                     list: [
                         {
@@ -89,8 +103,11 @@ export const useGlobalStore = defineStore("globalStore", {
                             innerHTML: "TEXT",
 
                             widthType: "Fit",
-                            width: "100",
+                            width: 100,
                             widthClasses: 'flex-none',
+                            heightType: "Grow",
+                            height: 100,
+                            heightClasses: 'flex-none',
 
                             absolute: false,
                             top: 0,
@@ -107,7 +124,7 @@ export const useGlobalStore = defineStore("globalStore", {
                     justify: "Start",
 
                     heightType: "Fit",
-                    height: "100",
+                    height: 100,
                     
                     list: [
                         {
@@ -115,10 +132,16 @@ export const useGlobalStore = defineStore("globalStore", {
                             id: "21",
                             type: "image",
                             url: "https://fipu.unipu.hr/_pub/themes_static/unipu2020/fipu/icons/fipu_hr.png",
+                            size: "contain",
+                            position: "center",
+                            repeat: "no-repeat",
 
                             widthType: "Grow",
-                            width: "500",
+                            width: 500,
                             widthClasses: 'flex-none',
+                            heightType: "Set",
+                            height: 100,
+                            heightClasses: 'h',
 
                             absolute: false,
                             top: 0,
@@ -135,7 +158,7 @@ export const useGlobalStore = defineStore("globalStore", {
                     justify: "Start",
 
                     heightType: "Fit",
-                    height: "100",
+                    height: 100,
                     
                     list: [
                         {
@@ -145,8 +168,11 @@ export const useGlobalStore = defineStore("globalStore", {
                             dashed: false,
 
                             widthType: "Grow",
-                            width: "500",
+                            width: 500,
                             widthClasses: 'flex-none',
+                            heightType: "Grow",
+                            height: 100,
+                            heightClasses: 'flex-none',
 
                             absolute: false,
                             top: 0,
@@ -172,15 +198,13 @@ export const useGlobalStore = defineStore("globalStore", {
             }
         },
         async setSelected(item, type) {
-            this.moving = null;
-            this.selectedItem = item;
-            if (item == null) {
+            if (type == null) {
                 this.highlighted = null;
                 this.selectedItem = null;
                 this.type = null;
                 this.selected = null;
                 return;
-            }
+            } else this.selectedItem = item;
             if (this.selected == item.id) return;
             this.type = null;
             this.selected = null;
@@ -195,7 +219,6 @@ export const useGlobalStore = defineStore("globalStore", {
             this.showImagePrompt = false;
             if (!bool)
                 return;
-            console.log("test");
             this.imageUrl.url = url;
         },
     }
