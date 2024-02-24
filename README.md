@@ -1,12 +1,12 @@
 # PDF-Maker
 
-PDF-Maker is a Vue3 Vite web application designed for creating and exporting PDF templates. This app provides a user-friendly interface for crafting personalized PDF documents by utilizing HTML elements.
+PDF-Template Maker is a Vue3 Vite web application designed for creating and exporting PDF templates. This app provides a user-friendly interface for crafting personalized PDF documents by utilizing HTML elements.
 
 ## Features
 
 - **Drag-and-Drop Editing:** Arrange and customize elements within your PDF templates using vue-draggable
 - **Text Editing:** Edit text content using vue3-quill & katex
-- **Svaing templates and PDF Export:** Save and load your templates for later use. Export your PDFs using vue-html-to-paper
+- **Saving templates and PDF Export:** Save and load your templates for later use. Export your PDFs using vue-html-to-paper
 
 ## Getting Started
 
