@@ -5,7 +5,6 @@
             <div class="font-bold">Type: </div> 
             <AP_dropdowninput :label="heightType" class="z-50" @selected="updateHeight" :list="[
                 {label: 'Fit', value: 'flex-none'},
-                {label: 'Divide', value: 'flex-1'},
                 {label: 'Grow', value: 'grow'},
                 {label: 'Set', value: 'h'},
             ]"/>

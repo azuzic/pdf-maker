@@ -10,9 +10,10 @@
         </div>
 
         <div class="relative mb-2 h-full w-full" :class="globalStore.highlighted == item.id && globalStore.selected != item.id ? 'outline-dotted outline-1' : ''" v-else>
-            <div :class="[globalStore.selected == item.id ? 'outline rounded outline-1' : 'hover:outline-dotted outline-1', 'bg-'+item.size]" class="h-full w-full"
+            <div :class="[globalStore.selected == item.id ? 'outline rounded outline-1' : 'hover:outline-dotted outline-1']" class="h-full w-full"
                 :style="'background-image: url('+(item.url.startsWith('$') && !globalStore.variablePreview ? 'https://wiki.dave.eu/images/4/47/Placeholder.png' : item.url) +
                 '); background-position: ' + item.position + 
+                '; background-size: ' + item.size + 
                 '; background-repeat: ' + item.repeat + ''">
             </div>
             

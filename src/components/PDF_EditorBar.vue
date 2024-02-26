@@ -2,8 +2,8 @@
     <div class="w-64 min-w-[256px] bg-PE_dark_primary border-r border-PE_dark_border drop-shadow-lg z-[200] h-full flex flex-col justify-center items-center px-8 transition-all duration-300"
         :class="globalStore.variablePreview ? 'brightness-50 opacity-50 pointer-events-none' : 'brightness-100'">
 
-        <Prompt :showPrompt="showHTMLPrompt" title="Download HTML" variable="Filename" placeholder="Name" @submitPrompt="saveHTML" />
-        <Prompt :showPrompt="showTemplatePrompt" title="Download Template" variable="Template name" placeholder="Name" @submitPrompt="saveTemplate" />
+        <Prompt :showPrompt="showHTMLPrompt" title="Save HTML" variable="Filename" placeholder="Name" @submitPrompt="saveHTML" />
+        <Prompt :showPrompt="showTemplatePrompt" title="Save Template" variable="Template name" placeholder="Name" @submitPrompt="saveTemplate" />
         <Prompt :showPrompt="globalStore.showImagePrompt" title="Change Image URL" variable="Image URL" placeholder="Url" @submitPrompt="globalStore.changeURL" />
         
         <div class="flex w-full gap-2 mb-4 mt-2" :class="globalStore.selected != null ? 'brightness-50 cursor-not-allowed' : 'brightness-100'">
@@ -23,7 +23,7 @@
             </button>
         </div>
 
-        <span class="w-full text-left text-PE_dark_gray font-bold pb-2">Items:</span>
+        <span class="w-full text-left text-PE_dark_gray font-bold pb-2">Elements:</span>
         <draggable class="flex flex-col items-center border border-PE_dark_border rounded mb-2" 
             @mousedown="globalStore.setSelected(null, null)"
             :list="globalStore.PredefinedPDFelements" v-if="globalStore.refresh" item-key="id"  

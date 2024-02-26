@@ -17,15 +17,21 @@
                     </abbr>
                 </b>
 
-                <span v-if="element.type == 'image'" :class="globalStore.highlighted == element.id ? 'text-PE_dark_white' : ''" class="text-PE_dark_blue"> 
-                    FIPU logo 
+                <span v-if="element.type == 'image'"> 
+                    <abbr :class="globalStore.highlighted == element.id || globalStore.selected == element.id ? 'text-PE_dark_white' : ''" class="no-underline text-PE_dark_blue" 
+                        :title="element.url">{{ element.url }}
+                    </abbr>
                 </span>
                 <span v-if="element.type == 'text'">
                     <abbr :class="globalStore.highlighted == element.id || globalStore.selected == element.id ? 'text-PE_dark_white' : ''" class="no-underline text-PE_dark_blue" 
                         :title="element.innerHTML">{{ element.innerHTML }}
                     </abbr>
                 </span>
-                <span v-if="element.type == 'line'">{{ element.dashed ? ' Dashed' : ' Solid' }}</span>
+                <span v-if="element.type == 'line'">                 
+                    <abbr :class="globalStore.highlighted == element.id || globalStore.selected == element.id ? 'text-PE_dark_white' : ''" class="no-underline text-PE_dark_blue" 
+                        :title="element.dashed ? ' Dashed' : ' Solid'">{{ element.dashed ? ' Dashed' : ' Solid' }}
+                    </abbr>
+                </span>
 
             </div> 
         </template>

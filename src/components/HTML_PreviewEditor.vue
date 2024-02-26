@@ -151,7 +151,8 @@ export default {
 
                 let variables = {};
                 
-                let parts = divContent.split(/\;\$(\w+)/);
+                let parts = divContent.split(/quot\;\$(\w+)/);
+                console.log(parts);
                 for (let i = 0; i < parts.length; i++) {
                     if (i % 2 != 0) { 
                         let variableName = `$${parts[i]}`;
