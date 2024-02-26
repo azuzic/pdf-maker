@@ -214,9 +214,7 @@ Each *element type* has its own unique settings, but they also share many settin
 ![alt text](md/imgs.png) 
 
 **Line** *element* setting is:
-- **
-
-Dashed**: *Toggle* which changes the *appearance* of the **line** *element*
+- **Dashed**: *Toggle* which changes the *appearance* of the **line** *element*
 
 ![alt text](md/linet.png) 
 
